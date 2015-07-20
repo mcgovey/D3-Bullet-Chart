@@ -1,11 +1,11 @@
 define( [
         './js/properties',
         'jquery',
-        './js/d3.min',
-        './js/bullet'
+        './js/d3.min'
+        // ,'./js/bullet'
         // ,'css!./stylesheet.css'
     ],
-    function (props, $, d3, bullet) {
+    function (props, $, d3) {//, bullet
         'use strict';
 
         //start bullet code
@@ -249,6 +249,14 @@ define( [
         }
   //end bullet code
 
+  //Temp data var creation
+        var datavar=[
+                      {"title":"Revenue","subtitle":"US$, in thousands","ranges":[150,225,300],"measures":[220,270],"markers":[250]},
+                      {"title":"Profit","subtitle":"%","ranges":[20,25,30],"measures":[21,23],"markers":[26]},
+                      {"title":"Order Size","subtitle":"US$, average","ranges":[350,500,600],"measures":[100,320],"markers":[550]},
+                      {"title":"New Customers","subtitle":"count","ranges":[1400,2000,2500],"measures":[1000,1650],"markers":[2100]},
+                      {"title":"Satisfaction","subtitle":"out of 5","ranges":[3.5,4.25,5],"measures":[3.2,4.7],"markers":[4.4]}
+                    ];
         return {
             definition: props,
             initialProperties: {
@@ -271,71 +279,26 @@ define( [
 
                 // $element.empty();
 
+                var margin = {top: 5, right: 40, bottom: 30, left: 120};
 
-// Chart object width
-var width = $element.width();
-// Chart object height
-var height = $element.height();
-// Chart object id
-var id = "container_" + layout.qInfo.qId;
-// Check to see if the chart element has already been created
-if (document.getElementById(id)) {
-    // if it has been created, empty it's contents so we can redraw it
-    $("#" + id).empty();
-}
-else {
-    // if it hasn't been created, create it with the appropiate id and size
-    $element.append($('<div />').attr("id", id).width(width).height(height));
-}
+                // Chart object width
+                var width = $element.width() - margin.left - margin.right;
+            //------------Hard coded division needs to be removed
+                // Chart object height
+                var height = $element.height()/5 - margin.top - margin.bottom - 10;//subtract 10 for bottom margin clipping
+                // Chart object id
+                var id = "container_" + layout.qInfo.qId;
+                // Check to see if the chart element has already been created
+                if (document.getElementById(id)) {
+                    // if it has been created, empty it's contents so we can redraw it
+                    $("#" + id).empty();
+                }
+                else {
+                    // if it hasn't been created, create it with the appropiate id and size
+                    $element.append($('<div />').attr("id", id).width(width).height(height));
+                }
 
-                var margin = {top: 5, right: 40, bottom: 20, left: 120};//,
-                    // width = 960 - margin.left - margin.right,
-                    // height = 50 - margin.top - margin.bottom;
-
-                console.log('d3: ', d3);
-                console.log('d3.bullet(): ', d3.bullet());
-
-                var data=[
-                      {"title":"Revenue","subtitle":"US$, in thousands","ranges":[150,225,300],"measures":[220,270],"markers":[250]},
-                      {"title":"Profit","subtitle":"%","ranges":[20,25,30],"measures":[21,23],"markers":[26]},
-                      {"title":"Order Size","subtitle":"US$, average","ranges":[350,500,600],"measures":[100,320],"markers":[550]},
-                      {"title":"New Customers","subtitle":"count","ranges":[1400,2000,2500],"measures":[1000,1650],"markers":[2100]},
-                      {"title":"Satisfaction","subtitle":"out of 5","ranges":[3.5,4.25,5],"measures":[3.2,4.7],"markers":[4.4]}
-                    ];
-                console.log('test data: ', data);
-
-                var chart = d3.bullet()
-                    .width(width)
-                    .height(height);
-
-                //need to replace bullets.json with hypercube
-                d3.json(data, function(error, data) {
-                  // if (error) throw error;
-
-                  var svg = d3.select("body").selectAll("svg")
-                      .data(data)
-                    .enter().append("svg")
-                      .attr("class", "bullet")
-                      .attr("width", width + margin.left + margin.right)
-                      .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-                      .call(chart);
-
-                  var title = svg.append("g")
-                      .style("text-anchor", "end")
-                      .attr("transform", "translate(-6," + height / 2 + ")");
-
-                  title.append("text")
-                      .attr("class", "title")
-                      .text(function(d) { return d.title; });
-
-                  title.append("text")
-                      .attr("class", "subtitle")
-                      .attr("dy", "1em")
-                      .text(function(d) { return d.subtitle; });
-
-                });
+            //------code to be used in creating cleaned hypercube array later
 
                 //         //loop for dims and measures
                 //         for (var i = 0; i < hc.qDimensionInfo.length; i++) {
@@ -353,7 +316,43 @@ else {
                 //                 indivcell += hc.qDataPages[0].qMatrix[r][c].qText;
                 //         }
                 //     }
-                // $element.append( /*final element here*/ );
+
+
+                // console.log('d3: ', d3);
+                // console.log('d3.bullet(): ', d3.bullet());
+
+                
+                // console.log('test data: ', datavar);
+
+                var chart = d3.bullet()
+                    .width(width)
+                    .height(height);
+                console.log("height,width: ", height,width);
+            //----------need to replace datavar with hypercube data
+
+                var svg = d3.select("#" + id).selectAll("svg")
+                  .data(datavar)
+                .enter().append("svg")
+                  .attr("class", "bullet")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                  .call(chart);
+
+                var title = svg.append("g")
+                  .style("text-anchor", "end")
+                  .attr("transform", "translate(-6," + height / 2 + ")");
+
+                title.append("text")
+                  .attr("class", "title")
+                  .text(function(d) { return d.title; });
+
+                // title.append("text")
+                //   .attr("class", "subtitle")
+                //   .attr("dy", "1em")
+                //   .text(function(d) { return d.subtitle; });
+
             }
         };
     } );
