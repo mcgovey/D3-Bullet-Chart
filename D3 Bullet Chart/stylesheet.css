@@ -1,15 +1,9 @@
-body {
+div.divbullet {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: auto;
   padding-top: 40px;
   position: relative;
   width: 960px;
-}
-
-button {
-  position: absolute;
-  right: 10px;
-  top: 10px;
 }
 
 .bullet { font: 10px sans-serif; }

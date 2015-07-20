@@ -3,7 +3,7 @@ define( [
         'jquery',
         './js/d3.min'
         // ,'./js/bullet'
-        // ,'css!./stylesheet.css'
+        ,'css!./stylesheet.css'
     ],
     function (props, $, d3) {//, bullet
         'use strict';
@@ -295,7 +295,7 @@ define( [
                 }
                 else {
                     // if it hasn't been created, create it with the appropiate id and size
-                    $element.append($('<div />').attr("id", id).width(width).height(height));
+                    $element.append($('<div />').attr("id", id).attr("class","divbullet").width(width).height(height));
                 }
 
             //------code to be used in creating cleaned hypercube array later
