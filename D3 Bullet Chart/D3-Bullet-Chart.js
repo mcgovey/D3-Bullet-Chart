@@ -283,11 +283,13 @@ define( [
 
                 // Chart object width
                 var width = $element.width() - margin.left - margin.right;
-            //------------Hard coded division needs to be removed
+
                 // Chart object height
-                var height = $element.height()/5 - margin.top - margin.bottom - 10;//subtract 10 for bottom margin clipping
+                var height = $element.height()/datavar.length - margin.top - margin.bottom - 10;//subtract 10 for bottom margin clipping
+
                 // Chart object id
                 var id = "container_" + layout.qInfo.qId;
+
                 // Check to see if the chart element has already been created
                 if (document.getElementById(id)) {
                     // if it has been created, empty it's contents so we can redraw it
@@ -317,19 +319,11 @@ define( [
                 //         }
                 //     }
 
-
-                // console.log('d3: ', d3);
-                // console.log('d3.bullet(): ', d3.bullet());
-
-                
-                // console.log('test data: ', datavar);
-
                 var chart = d3.bullet()
                     .width(width)
                     .height(height);
-                console.log("height,width: ", height,width);
-            //----------need to replace datavar with hypercube data
 
+            //----------need to replace datavar with hypercube data
                 var svg = d3.select("#" + id).selectAll("svg")
                   .data(datavar)
                 .enter().append("svg")
