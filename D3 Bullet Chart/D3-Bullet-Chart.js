@@ -249,14 +249,14 @@ define( [
         }
   //end bullet code
 
-  //Temp data var creation
         var datavar=[
-                      {"title":"Revenue","subtitle":"US$, in thousands","ranges":[150,225,300],"measures":[220,270],"markers":[250]},
-                      {"title":"Profit","subtitle":"%","ranges":[20,25,30],"measures":[21,23],"markers":[26]},
-                      {"title":"Order Size","subtitle":"US$, average","ranges":[350,500,600],"measures":[100,320],"markers":[550]},
-                      {"title":"New Customers","subtitle":"count","ranges":[1400,2000,2500],"measures":[1000,1650],"markers":[2100]},
-                      {"title":"Satisfaction","subtitle":"out of 5","ranges":[3.5,4.25,5],"measures":[3.2,4.7],"markers":[4.4]}
+                      {"title":"Revenue","ranges":[150,225,300],"measures":[220,270],"markers":[250]},
+                      {"title":"Profit","ranges":[20,25,30],"measures":[21,23],"markers":[26]},
+                      {"title":"Order Size","ranges":[350,500,600],"measures":[100,320],"markers":[550]},
+                      {"title":"New Customers","ranges":[1400,2000,2500],"measures":[1000,1650],"markers":[2100]},
+                      {"title":"Satisfaction","ranges":[3.5,4.25,5],"measures":[3.2,4.7],"markers":[4.4]}
                     ];
+
         return {
             definition: props,
             initialProperties: {
@@ -275,11 +275,58 @@ define( [
 
 
                 var hc = layout.qHyperCube;
-                console.log('Data returned: ', hc);
+          //------code to be used in creating cleaned hypercube array later
+                console.log("hc:", hc);
+
+                var hcData = [];
+
+                var numMeasures = hc.qMeasureInfo.length,
+                    numDims     = hc.qDimensionInfo.length;
+                //Array creation
+                //Check the number of measures
+                if (hc.qMeasureInfo.length=2) {
+                  if (hc.qDimensionInfo.length!=0) {
+
+                    for (var r = 0; r < hc.qDataPages[0].qMatrix.length; r++) {
+                      
+                      hcData.push({ "title"   : hc.qDataPages[0].qMatrix[r][0].qText,
+                                    "markers" : [hc.qDataPages[0].qMatrix[r][1].qText],
+                                    "measures": [hc.qDataPages[0].qMatrix[r][2].qText],
+                                    "ranges"  : [0,10000,20000]
+                                  });
+
+                    }
+                  }
+                }
+                    // // iterate over all rows
+                    // for (var r = 0; r < hc.qDataPages[0].qMatrix.length; r++) {
+
+                    //     // console.log("iteration counters", hc.qDataPages[0].qMatrix[r]);
+
+                    //     // iterate over all cells within a row
+                    //     for (var c = 0; c < hc.qDataPages[0].qMatrix[r].length; c++) {
+
+                    //       // console.log("iteration counters", hc.qDataPages[0].qMatrix[r][c].qText);
+
+                    //                 hcData.push({"title":hc.qDimensionInfo[0].qFallbackTitle});
+                    //                 // ,"markers" : [hc.qDataPages[0].qMatrix[r][c].qText]};
+                    //                 console.log("hcDim:", hc.qDimensionInfo[0].qFallbackTitle);
+                    //     }
+                    // }
+                    // for (var i = 0; i < hc.qMeasureInfo.length; i++) {
+                    //     hcData[i].measureNames += hc.qMeasureInfo[i].qFallbackTitle;
+                    // }
+
+                    console.log('hcData: ',hcData);
+                    console.log('datavar: ',datavar);
+
+                    
+
+//console.log('Data returned: ', hc);
 
                 // $element.empty();
 
-                var margin = {top: 5, right: 40, bottom: 30, left: 120};
+                var margin = {top: 5, right: 40, bottom: 20, left: 120};
 
                 // Chart object width
                 var width = $element.width() - margin.left - margin.right;
@@ -300,32 +347,14 @@ define( [
                     $element.append($('<div />').attr("id", id).attr("class","divbullet").width(width).height(height));
                 }
 
-            //------code to be used in creating cleaned hypercube array later
-
-                //         //loop for dims and measures
-                //         for (var i = 0; i < hc.qDimensionInfo.length; i++) {
-                //             dimnames += hc.qDimensionInfo[i].qFallbackTitle;
-                //         }
-                //         for (var i = 0; i < hc.qMeasureInfo.length; i++) {
-                //             measurenames += hc.qMeasureInfo[i].qFallbackTitle;
-                //         }
-
-                //     // iterate over all rows
-                //     for (var r = 0; r < hc.qDataPages[0].qMatrix.length; r++) {
-
-                //         // iterate over all cells within a row
-                //         for (var c = 0; c < hc.qDataPages[0].qMatrix[r].length; c++) {
-                //                 indivcell += hc.qDataPages[0].qMatrix[r][c].qText;
-                //         }
-                //     }
-
+  
                 var chart = d3.bullet()
                     .width(width)
                     .height(height);
 
             //----------need to replace datavar with hypercube data
                 var svg = d3.select("#" + id).selectAll("svg")
-                  .data(datavar)
+                  .data(hcData)
                 .enter().append("svg")
                   .attr("class", "bullet")
                   .attr("width", width + margin.left + margin.right)
