@@ -281,18 +281,24 @@ define( [
                 var hcData = [];
 
                 var numMeasures = hc.qMeasureInfo.length,
-                    numDims     = hc.qDimensionInfo.length;
+                    numDims     = hc.qDimensionInfo.length,
+                    dataPages  = hc.qDataPages[0].qMatrix;
+
                 //Array creation
                 //Check the number of measures
-                if (hc.qMeasureInfo.length=2) {
-                  if (hc.qDimensionInfo.length!=0) {
+                if (numMeasures=2) {
 
-                    for (var r = 0; r < hc.qDataPages[0].qMatrix.length; r++) {
+                  //Check the number of dimensions
+                  if (numDims!=0) {
+
+                    for (var r = 0; r < dataPages.length; r++) {
                       
-                      hcData.push({ "title"   : hc.qDataPages[0].qMatrix[r][0].qText,
-                                    "markers" : [hc.qDataPages[0].qMatrix[r][1].qText],
-                                    "measures": [hc.qDataPages[0].qMatrix[r][2].qText],
-                                    "ranges"  : [0,10000,20000]
+                      hcData.push({ "title"   : dataPages[r][0].qText,
+                                    "markers" : [Number(dataPages[r][1].qText.replace(",",""))],
+                                    "measures": [Number(dataPages[r][2].qText.replace(",",""))],
+                                    "ranges"  : [Number(dataPages[r][3].qText.replace(",",""))*.5,
+                                                  Number(dataPages[r][3].qText.replace(",",""))*.75,
+                                                  Number(dataPages[r][3].qText.replace(",",""))]
                                   });
 
                     }
