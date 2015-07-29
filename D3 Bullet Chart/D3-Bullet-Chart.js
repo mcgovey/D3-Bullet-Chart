@@ -296,13 +296,14 @@ define( [
                     }
                   }
                 }
+
                     console.log('hcData: ',hcData);
 
                 var margin = {top: 5, right: 20, bottom: 20, left: 40};
 
                 // Chart object width
                 var width = $element.width() - margin.left - margin.right;
- 
+
                 // Chart object height
                 var height = $element.height()/hcData.length - margin.top - margin.bottom - 10;//subtract 10 for bottom margin clipping
 
