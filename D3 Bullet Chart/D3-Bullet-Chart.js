@@ -249,14 +249,6 @@ define( [
         }
   //end bullet code
 
-        var datavar=[
-                      {"title":"Revenue","ranges":[150,225,300],"measures":[220,270],"markers":[250]},
-                      {"title":"Profit","ranges":[20,25,30],"measures":[21,23],"markers":[26]},
-                      {"title":"Order Size","ranges":[350,500,600],"measures":[100,320],"markers":[550]},
-                      {"title":"New Customers","ranges":[1400,2000,2500],"measures":[1000,1650],"markers":[2100]},
-                      {"title":"Satisfaction","ranges":[3.5,4.25,5],"measures":[3.2,4.7],"markers":[4.4]}
-                    ];
-
         return {
             definition: props,
             initialProperties: {
@@ -304,41 +296,16 @@ define( [
                     }
                   }
                 }
-                    // // iterate over all rows
-                    // for (var r = 0; r < hc.qDataPages[0].qMatrix.length; r++) {
-
-                    //     // console.log("iteration counters", hc.qDataPages[0].qMatrix[r]);
-
-                    //     // iterate over all cells within a row
-                    //     for (var c = 0; c < hc.qDataPages[0].qMatrix[r].length; c++) {
-
-                    //       // console.log("iteration counters", hc.qDataPages[0].qMatrix[r][c].qText);
-
-                    //                 hcData.push({"title":hc.qDimensionInfo[0].qFallbackTitle});
-                    //                 // ,"markers" : [hc.qDataPages[0].qMatrix[r][c].qText]};
-                    //                 console.log("hcDim:", hc.qDimensionInfo[0].qFallbackTitle);
-                    //     }
-                    // }
-                    // for (var i = 0; i < hc.qMeasureInfo.length; i++) {
-                    //     hcData[i].measureNames += hc.qMeasureInfo[i].qFallbackTitle;
-                    // }
 
                     console.log('hcData: ',hcData);
-                    console.log('datavar: ',datavar);
 
-                    
-
-//console.log('Data returned: ', hc);
-
-                // $element.empty();
-
-                var margin = {top: 5, right: 40, bottom: 20, left: 120};
+                var margin = {top: 5, right: 20, bottom: 20, left: 40};
 
                 // Chart object width
                 var width = $element.width() - margin.left - margin.right;
 
                 // Chart object height
-                var height = $element.height()/datavar.length - margin.top - margin.bottom - 10;//subtract 10 for bottom margin clipping
+                var height = $element.height()/hcData.length - margin.top - margin.bottom - 10;//subtract 10 for bottom margin clipping
 
                 // Chart object id
                 var id = "container_" + layout.qInfo.qId;
