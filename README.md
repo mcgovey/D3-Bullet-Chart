@@ -3,8 +3,7 @@ Qlik Sense Extension for Dimensional Bullet Charts using D3
 
 ## Project Description
 
-
-
+The purpose of this project, when it's complete, is to provide a interactive bullet chart using D3 concepts that allows the user to visualize data across a dimension.  The linear gauge chart in Qlik Sense allows for some of the same functionality but does not allow the user to create a bar for each dimension.
 
 
 ## Installation Instructions
