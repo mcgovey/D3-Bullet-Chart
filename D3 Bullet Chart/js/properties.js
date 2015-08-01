@@ -15,6 +15,21 @@ define( [], function () {
         type : "boolean",
         defaultValue : false
     };
+    var barSize = {
+        ref : "props.section2.barSize",
+        label : "Change size of bar",
+        type : "number",
+        defaultValue : 33,
+        min : 10,
+        max : 100,
+        component : "slider"
+    };
+    var barColor = {
+        ref : "props.section2.barColor",
+        label : "Change bar color",
+        type : "integer",
+        defaultValue : 2
+    };
 
 
     //----------final properties creation---------------
@@ -44,17 +59,17 @@ define( [], function () {
                             type: "items",
                             label: "Dimensions",
                             items: {
-                                header1_item1: dimLabel,
-                                backButton : showDimSubTitles
+                                dimensionLabel: dimLabel,
+                                dimensionTitleBtn : showDimSubTitles
                             }
-                        // },
-                        // header2: {
-                        //     type: "items",
-                        //     label: "Header 2",
-                        //     items: {
-                        //         header2_item1: header2_item1,
-                        //         header2_item2: header2_item2
-                        //     }
+                        },
+                        header2: {
+                            type: "items",
+                            label: "Measure Bar",
+                            items: {
+                                barSize: barSize,
+                                barColor: barColor
+                            }
                         }
                     }
                     // type : "expandable-items",

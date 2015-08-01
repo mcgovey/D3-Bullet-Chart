@@ -26,6 +26,9 @@ define( [
           else {
             var dimLabel=""
           };
+          //create variables from layout settings
+          var propShowDimSubTitles  = layout.props.section1.showDimSubTitles,
+              propMeasureBarSize    = layout.props.section2.barSize;
 
 
           //final array creation, create variables for testing and data manipulation as well
@@ -34,15 +37,16 @@ define( [
               numDims     = hypercubeData.qDimensionInfo.length,
               dataPages  = hypercubeData.qDataPages[0].qMatrix;
 
+          console.log("bar height: ",propMeasureBarSize);
+
           for (var r = 0; r < dataPages.length; r++) {
 
             //use dimensions if one was created
-            if (numDims!=0) {
+            if (numDims!==0) {
               dataObject.push({ "title"   : dataPages[r][0].qText});
 
-              console.log("dimsubtitles: ",layout.props.section1.showDimSubTitles);
               //check for subtitles in 
-              if (layout.props.section1.showDimSubTitles=true) {
+              if (propShowDimSubTitles==true) {
                 dataObject[r]["subtitle"]  = dimLabel;
               }
             }
@@ -51,18 +55,24 @@ define( [
               dataObject.push({ "title"   : dimLabel});
             }
 
-            if (numMeasures=2) {
+            if (numMeasures>=1) {
               //use numDims to account for when chart does not have dimensions
-              dataObject[r]["markers"] = [Number(dataPages[r][numDims].qText.replace(",",""))];
-              dataObject[r]["measures"] = [Number(dataPages[r][numDims+1].qText.replace(",",""))];
+              dataObject[r]["measures"] = [Number(dataPages[r][numDims].qText.replace(",",""))];
+            }
+            if (numMeasures>=2) {
+              dataObject[r]["markers"] = [Number(dataPages[r][numDims+1].qText.replace(",",""))];
+            }
+            if (numMeasures>=3) {
               dataObject[r]["ranges"] = [Number(dataPages[r][numDims+2].qText.replace(",",""))*.5,
                                       Number(dataPages[r][numDims+2].qText.replace(",",""))*.75,
                                       Number(dataPages[r][numDims+2].qText.replace(",",""))];
-
-              }
-
+            }
+            
+            dataObject[r]["measureBarHeight"] = [propMeasureBarSize];
 
             }
+
+            console.log("dataObject: ", dataObject);
 
           return dataObject;
         };

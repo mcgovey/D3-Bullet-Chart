@@ -11,16 +11,17 @@ d3.bullet = function() {
       ranges = bulletRanges,
       markers = bulletMarkers,
       measures = bulletMeasures,
+      measureHeight = bulletMeasureHeight,
       width = 380,
       height = 30,
       tickFormat = null;
-
   // For each small multiple…
   function bullet(g) {
     g.each(function(d, i) {
       var rangez = ranges.call(this, d, i).slice().sort(d3.descending),
           markerz = markers.call(this, d, i).slice().sort(d3.descending),
           measurez = measures.call(this, d, i).slice().sort(d3.descending),
+          measureHeightz = measureHeight.call(this, d, i).slice().sort(d3.descending),
           g = d3.select(this);
 
       // Compute the new x-scale.
@@ -67,9 +68,9 @@ d3.bullet = function() {
       measure.enter().append("rect")
           .attr("class", function(d, i) { return "measure s" + i; })
           .attr("width", w0)
-          .attr("height", height / 3)
+          .attr("height", height * measureHeightz[0] * .01)
           .attr("x", reverse ? x0 : 0)
-          .attr("y", height / 3)
+          .attr("y", height * (100-measureHeightz[0]) * .005)
         .transition()
           .duration(duration)
           .attr("width", w1)
@@ -78,9 +79,9 @@ d3.bullet = function() {
       measure.transition()
           .duration(duration)
           .attr("width", w1)
-          .attr("height", height / 3)
+          .attr("height", height * measureHeightz[0] * .01)
           .attr("x", reverse ? x1 : 0)
-          .attr("y", height / 3);
+          .attr("y", height * (100-measureHeightz[0]) * .005);//use user defined measure height divided by two for y positioning
 
       // Update the marker lines.
       var marker = g.selectAll("line.marker")
@@ -213,6 +214,10 @@ d3.bullet = function() {
 
   return bullet;
 };
+
+function bulletMeasureHeight(d){
+  return d.measureBarHeight;
+}
 
 function bulletRanges(d) {
   return d.ranges;
