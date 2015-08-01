@@ -10,14 +10,15 @@ define( [
         './js/properties'
         ,'jquery'
         ,'./js/bullet'
+        ,'./js/senseUtils'
         ,'css!./stylesheet.css'
     ],
-    function (props, $, style, bullet) {
+    function (props, $, bullet, senseUtils) {
         'use strict';
 
         var createDataArray = function (hypercubeData, layout){
           
-          console.log(layout);
+          // console.log(layout);
 
           //get dimension label if it exists, if not create an empty string
           if (layout.props.section1.dimLabel) { 
@@ -50,16 +51,13 @@ define( [
               dataObject.push({ "title"   : dimLabel});
             }
 
-            console.log("data object: ",dataObject);
-
-
             if (numMeasures=2) {
-
-              dataObject[r]["markers"] = [Number(dataPages[r][1].qText.replace(",",""))];
-              dataObject[r]["measures"] = [Number(dataPages[r][2].qText.replace(",",""))];
-              dataObject[r]["ranges"] = [Number(dataPages[r][3].qText.replace(",",""))*.5,
-                                      Number(dataPages[r][3].qText.replace(",",""))*.75,
-                                      Number(dataPages[r][3].qText.replace(",",""))];
+              //use numDims to account for when chart does not have dimensions
+              dataObject[r]["markers"] = [Number(dataPages[r][numDims].qText.replace(",",""))];
+              dataObject[r]["measures"] = [Number(dataPages[r][numDims+1].qText.replace(",",""))];
+              dataObject[r]["ranges"] = [Number(dataPages[r][numDims+2].qText.replace(",",""))*.5,
+                                      Number(dataPages[r][numDims+2].qText.replace(",",""))*.75,
+                                      Number(dataPages[r][numDims+2].qText.replace(",",""))];
 
               }
 

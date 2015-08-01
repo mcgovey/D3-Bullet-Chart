@@ -24,8 +24,8 @@ define( [], function () {
         items: {
             dimensions: {
                 uses: "dimensions"
-                // ,min: 0
-                // ,max: 1
+                ,min: 0
+                ,max: 1
             },
             measures: {
                 uses: "measures"
