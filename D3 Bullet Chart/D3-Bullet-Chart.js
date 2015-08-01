@@ -10,10 +10,9 @@ define( [
         './js/properties'
         ,'jquery'
         ,'./js/bullet'
-        ,'./js/senseUtils'
         ,'css!./stylesheet.css'
     ],
-    function (props, $, bullet, senseUtils) {
+    function (props, $, bullet) {
         'use strict';
 
         var createDataArray = function (hypercubeData, layout){
@@ -41,6 +40,7 @@ define( [
             if (numDims!=0) {
               dataObject.push({ "title"   : dataPages[r][0].qText});
 
+              console.log("dimsubtitles: ",layout.props.section1.showDimSubTitles);
               //check for subtitles in 
               if (layout.props.section1.showDimSubTitles=true) {
                 dataObject[r]["subtitle"]  = dimLabel;
@@ -96,7 +96,7 @@ define( [
                 var width = $element.width() - margin.left - margin.right;
 
                 // Chart object height
-                var height = ($element.height()/hcData.length) - margin.top - margin.bottom - 20;//subtract 20 for bottom margin clipping
+                var height = ($element.height()/hcData.length) - margin.top - margin.bottom - hcData.length*10;//subtract 20 for bottom margin clipping
 
                 // Chart object id
                 var id = "container_" + layout.qInfo.qId;
@@ -122,12 +122,10 @@ define( [
                 .enter().append("svg")
                   .attr("class", "bullet")
                   .attr("width", width + margin.left + margin.right)
-                  .attr("height", height + margin.top + margin.bottom)
+                  .attr("height", height + margin.top + margin.bottom)//height
                 .append("g")
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                   .call(chart);
-
-console.log("bar height: ",height, " + top: ", margin.top, " + bottom: ", margin.bottom);
 
                 var title = svg.append("g")
                   .style("text-anchor", "end")
