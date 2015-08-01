@@ -15,31 +15,56 @@ define( [
     function (props, $, style, bullet) {
         'use strict';
 
-        var createDataArray = function (hypercubeData){
+        var createDataArray = function (hypercubeData, layout){
+          
+          console.log(layout);
+
+          //get dimension label if it exists, if not create an empty string
+          if (layout.props.section1.dimLabel) { 
+            var dimLabel=layout.props.section1.dimLabel;
+          }
+          else {
+            var dimLabel=""
+          };
+
+
+          //final array creation, create variables for testing and data manipulation as well
           var dataObject = [],
               numMeasures = hypercubeData.qMeasureInfo.length,
               numDims     = hypercubeData.qDimensionInfo.length,
               dataPages  = hypercubeData.qDataPages[0].qMatrix;
 
-                //Array creation
-                //Check the number of measures
-                if (numMeasures=2) {
+          for (var r = 0; r < dataPages.length; r++) {
 
-                  //Check the number of dimensions
-                  if (numDims!=0) {
+            //use dimensions if one was created
+            if (numDims!=0) {
+              dataObject.push({ "title"   : dataPages[r][0].qText});
 
-                for (var r = 0; r < dataPages.length; r++) {
+              //check for subtitles in 
+              if (layout.props.section1.showDimSubTitles=true) {
+                dataObject[r]["subtitle"]  = dimLabel;
+              }
+            }
+            //if no dimensions were added, use the title listed
+            else {
+              dataObject.push({ "title"   : dimLabel});
+            }
 
-                  dataObject.push({ "title"   : dataPages[r][0].qText});
-                  dataObject[r]["markers"] = [Number(dataPages[r][1].qText.replace(",",""))];
-                  dataObject[r]["measures"] = [Number(dataPages[r][2].qText.replace(",",""))];
-                  dataObject[r]["ranges"] = [Number(dataPages[r][3].qText.replace(",",""))*.5,
-                                          Number(dataPages[r][3].qText.replace(",",""))*.75,
-                                          Number(dataPages[r][3].qText.replace(",",""))];
+            console.log("data object: ",dataObject);
 
-                }
-                  }
-                }
+
+            if (numMeasures=2) {
+
+              dataObject[r]["markers"] = [Number(dataPages[r][1].qText.replace(",",""))];
+              dataObject[r]["measures"] = [Number(dataPages[r][2].qText.replace(",",""))];
+              dataObject[r]["ranges"] = [Number(dataPages[r][3].qText.replace(",",""))*.5,
+                                      Number(dataPages[r][3].qText.replace(",",""))*.75,
+                                      Number(dataPages[r][3].qText.replace(",",""))];
+
+              }
+
+
+            }
 
           return dataObject;
         };
@@ -60,25 +85,14 @@ define( [
             },
             paint: function ( $element, layout ) {
 
-
-                var hc = layout.qHyperCube;
-                // console.log("hc:", hc);
-
-                // var hcData = [];
-
-                // var numMeasures = hc.qMeasureInfo.length,
-                //     numDims     = hc.qDimensionInfo.length,
-                //     dataPages  = hc.qDataPages[0].qMatrix;
-
-                // var hcData = createDataArray();
-
-
-                var hcData = createDataArray(hc);
+                //set hypercube variable and call function on hcData to return data in a json format
+                var hc = layout.qHyperCube,
+                    hcData = createDataArray(hc,layout);
 
                 // console.log('hcDataType: ',typeof hcData);
                 console.log('hcData: ',hcData);
 
-                var margin = {top: 5, right: 20, bottom: 20, left: 40};
+                var margin = {top: 5, right: 20, bottom: 20, left: 60};
 
                 // Chart object width
                 var width = $element.width() - margin.left - margin.right;
@@ -115,6 +129,8 @@ define( [
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                   .call(chart);
 
+console.log("bar height: ",height, " + top: ", margin.top, " + bottom: ", margin.bottom);
+
                 var title = svg.append("g")
                   .style("text-anchor", "end")
                   .attr("transform", "translate(-6," + height / 2 + ")");
@@ -123,11 +139,14 @@ define( [
                   .attr("class", "title")
                   .text(function(d) { return d.title; });
 
-                // title.append("text")
-                //   .attr("class", "subtitle")
-                //   .attr("dy", "1em")
-                //   .text(function(d) { return d.subtitle; });
+                title.append("text")
+                  .attr("class", "subtitle")
+                  .attr("dy", "1em")
+                  .text(function(d) { return d.subtitle; });
 
+            },
+            resize: function ($el, layout) {
+                this.paint($el, layout);
             }
         };
     } );
