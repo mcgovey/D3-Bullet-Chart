@@ -15,6 +15,21 @@ define( [
     function (props, $, bullet) {
         'use strict';
 
+        function hexToRgb(hex) {
+            // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+            var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+            hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+                return r + r + g + g + b + b;
+            });
+
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        };
+
         var createDataArray = function (hypercubeData, layout){
           
           // console.log(layout);
@@ -36,8 +51,6 @@ define( [
               numMeasures = hypercubeData.qMeasureInfo.length,
               numDims     = hypercubeData.qDimensionInfo.length,
               dataPages  = hypercubeData.qDataPages[0].qMatrix;
-
-          console.log("bar height: ",propMeasureBarSize);
 
           for (var r = 0; r < dataPages.length; r++) {
 
@@ -67,7 +80,7 @@ define( [
                                       Number(dataPages[r][numDims+2].qText.replace(",",""))*.75,
                                       Number(dataPages[r][numDims+2].qText.replace(",",""))];
             }
-            
+
             dataObject[r]["measureBarHeight"] = [propMeasureBarSize];
 
             }
@@ -98,7 +111,7 @@ define( [
                     hcData = createDataArray(hc,layout);
 
                 // console.log('hcDataType: ',typeof hcData);
-                console.log('hcData: ',hcData);
+                // console.log('hcData: ',hcData);
 
                 var margin = {top: 5, right: 20, bottom: 20, left: 60};
 
@@ -115,12 +128,10 @@ define( [
                 if (document.getElementById(id)) {
                     // if it has been created, empty it's contents so we can redraw it
                     $("#" + id).empty();
-                }
-                else {
+                } else {
                     // if it hasn't been created, create it with the appropiate id and size
                     $element.append($('<div />').attr("id", id).attr("class","divbullet").width(width).height(height));
                 }
-
   
                 var chart = d3.bullet()
                     .width(width)
@@ -150,6 +161,19 @@ define( [
                   .attr("dy", "1em")
                   .text(function(d) { return d.subtitle; });
 
+                //fill the bullet with the color specified in the menu
+                $("#" + id+" rect.measure").attr("fill",layout.props.section2.barColor);
+
+                //color the marker with the color specified in the menu
+                $("#" + id+" line.marker").attr("stroke",layout.props.section3.markerColor);
+
+                //convert hex to rgb as first step of gradient creation
+                var rangeRGB = hexToRgb(layout.props.section4.rangeColor);
+                console.log(rangeRGB.r, rangeRGB.g, rangeRGB.b);
+
+                $("#" + id+" rect.range.s2").attr("fill","rgb("+Math.floor(rangeRGB.r*0.7)+", "+Math.floor(rangeRGB.g*0.7)+", "+Math.floor(rangeRGB.b*0.7)+")");
+                $("#" + id+" rect.range.s1").attr("fill","rgb("+Math.floor(rangeRGB.r*0.85)+", "+Math.floor(rangeRGB.g*0.85)+", "+Math.floor(rangeRGB.b*0.85)+")");
+                $("#" + id+" rect.range.s0").attr("fill","rgb("+rangeRGB.r+", "+rangeRGB.g+", "+rangeRGB.b+")");
             },
             resize: function ($el, layout) {
                 this.paint($el, layout);
