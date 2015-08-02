@@ -52,6 +52,7 @@ define( [
               numDims     = hypercubeData.qDimensionInfo.length,
               dataPages  = hypercubeData.qDataPages[0].qMatrix;
 
+          //loop through all rows in data cube
           for (var r = 0; r < dataPages.length; r++) {
 
             //use dimensions if one was created
@@ -68,24 +69,32 @@ define( [
               dataObject.push({ "title"   : dimLabel});
             }
 
-            if (numMeasures>=1) {
+            //check number of dimensions and build object based on the expressions available
+            if (numMeasures==1) {
               //use numDims to account for when chart does not have dimensions
               dataObject[r]["measures"] = [Number(dataPages[r][numDims].qText.replace(",",""))];
+              dataObject[r]["markers"]  = [0];
+              dataObject[r]["ranges"]   = [0,0,0];
             }
-            if (numMeasures>=2) {
-              dataObject[r]["markers"] = [Number(dataPages[r][numDims+1].qText.replace(",",""))];
+            if (numMeasures==2) {
+              dataObject[r]["measures"] = [Number(dataPages[r][numDims].qText.replace(",",""))];
+              dataObject[r]["markers"]  = [Number(dataPages[r][numDims+1].qText.replace(",",""))];
+              dataObject[r]["ranges"]   = [0,0,0];
             }
-            if (numMeasures>=3) {
-              dataObject[r]["ranges"] = [Number(dataPages[r][numDims+2].qText.replace(",",""))*.5,
-                                      Number(dataPages[r][numDims+2].qText.replace(",",""))*.75,
-                                      Number(dataPages[r][numDims+2].qText.replace(",",""))];
+            if (numMeasures==3)  {
+              dataObject[r]["measures"] = [Number(dataPages[r][numDims].qText.replace(",",""))];
+              dataObject[r]["markers"]  = [Number(dataPages[r][numDims+1].qText.replace(",",""))];
+              dataObject[r]["ranges"]   = [Number(dataPages[r][numDims+2].qText.replace(",",""))*.5,
+                                            Number(dataPages[r][numDims+2].qText.replace(",",""))*.75,
+                                            Number(dataPages[r][numDims+2].qText.replace(",",""))];
             }
-
+//need else condition here - having trouble with number of dimension handling
+            //create the measure bar height as an additional data measure, this is driven from properties
             dataObject[r]["measureBarHeight"] = [propMeasureBarSize];
 
             }
 
-            console.log("dataObject: ", dataObject);
+            // console.log("dataObject: ", dataObject);
 
           return dataObject;
         };
@@ -169,7 +178,6 @@ define( [
 
                 //convert hex to rgb as first step of gradient creation
                 var rangeRGB = hexToRgb(layout.props.section4.rangeColor);
-                console.log(rangeRGB.r, rangeRGB.g, rangeRGB.b);
 
                 $("#" + id+" rect.range.s2").attr("fill","rgb("+Math.floor(rangeRGB.r*0.7)+", "+Math.floor(rangeRGB.g*0.7)+", "+Math.floor(rangeRGB.b*0.7)+")");
                 $("#" + id+" rect.range.s1").attr("fill","rgb("+Math.floor(rangeRGB.r*0.85)+", "+Math.floor(rangeRGB.g*0.85)+", "+Math.floor(rangeRGB.b*0.85)+")");

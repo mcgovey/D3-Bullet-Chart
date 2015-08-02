@@ -130,7 +130,7 @@ define( [], function () {
         ref : "props.section4.rangeColor",
         label : "Change range color",
         type : "string",
-        defaultValue: "#708090",
+        defaultValue: "#D3D3D3",
         component: "dropdown",
         options: colorOptions
     };
@@ -148,6 +148,8 @@ define( [], function () {
             },
             measures: {
                 uses: "measures"
+                ,min: 1
+                ,max: 3
             },
             sorting: {
                 uses: "sorting"
@@ -190,52 +192,6 @@ define( [], function () {
                             }
                         }
                     }
-                    // type : "expandable-items",
-                    // label : "Configuration",
-                    // items : {
-                    //     type    : "accordion",
-                    //     label   : "Dimensions",
-                    //     items   : {
-                    //         dimLabel : {
-                    //             ref: "props.dimLabel",
-                    //             label: "Dimension Label",
-                    //             type: "string"
-                    //         }
-                    //     }
-                    //     ,
-                    //     backButton : {
-                    //         ref : "buttons.back",
-                    //         label : "Back",
-                    //         type : "boolean",
-                    //         defaultValue : true
-                    //     },
-                    //     forwardButton : {
-                    //         ref : "buttons.forward",
-                    //         label : "Forward",
-                    //         type : "boolean",
-                    //         defaultValue : true
-                    //     },
-                    //     lockButton : {
-                    //         ref : "buttons.lockall",
-                    //         label : "Lock All",
-                    //         type : "boolean",
-                    //         defaultValue : false
-                    //     },
-                    //     unlockButton : {
-                    //         ref : "buttons.unlockall",
-                    //         label : "Unlock All",
-                    //         type : "boolean",
-                    //         defaultValue : false
-                    //     },
-                        
-                    // //McGovey 5/19/15 - Added to show tab names
-                    //     tabs : {
-                    //         ref : "buttons.tabs",
-                    //         label : "Show Tab Names",
-                    //         type : "boolean",
-                    //         defaultValue : false
-                    //     }
-                    //}
             }
         }
     };
