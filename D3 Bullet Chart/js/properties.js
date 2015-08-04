@@ -184,6 +184,12 @@ define( [], function () {
         step : .05,
         component: "slider"
     };
+    var uniformAxisBool = {
+        ref : "props.section5.uniformAxisBool",
+        label : "Same axis for all dimensions?",
+        type : "boolean",
+        defaultValue : true
+    };
 
 
 
@@ -245,6 +251,13 @@ define( [], function () {
                                 upperThreshRange: upperThreshRange,
                                 middleThreshRange: middleThreshRange,
                                 lowerThreshRange:lowerThreshRange
+                            }
+                        },
+                        header5: {
+                            type: "items",
+                            label: "Axis",
+                            items: {
+                                uniformAxisBool: uniformAxisBool
                             }
                         }
                     }
