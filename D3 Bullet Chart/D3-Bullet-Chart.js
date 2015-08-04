@@ -43,7 +43,10 @@ define( [
           };
           //create variables from layout settings
           var propShowDimSubTitles  = layout.props.section1.showDimSubTitles,
-              propMeasureBarSize    = layout.props.section2.barSize;
+              propMeasureBarSize    = layout.props.section2.barSize,
+              propUpperRangeThresh  = Number(layout.props.section4.upperThreshRange),
+              propMiddleRangeThresh = Number(layout.props.section4.middleThreshRange),
+              propLowerRangeThresh  = Number(layout.props.section4.lowerThreshRange);
 
 
           //final array creation, create variables for testing and data manipulation as well
@@ -84,9 +87,9 @@ define( [
             if (numMeasures==3)  {
               dataObject[r]["measures"] = [Number(dataPages[r][numDims].qText.replace(",",""))];
               dataObject[r]["markers"]  = [Number(dataPages[r][numDims+1].qText.replace(",",""))];
-              dataObject[r]["ranges"]   = [Number(dataPages[r][numDims+2].qText.replace(",",""))*.5,
-                                            Number(dataPages[r][numDims+2].qText.replace(",",""))*.75,
-                                            Number(dataPages[r][numDims+2].qText.replace(",",""))];
+              dataObject[r]["ranges"]   = [Number(dataPages[r][numDims+2].qText.replace(",",""))*propUpperRangeThresh,
+                                            Number(dataPages[r][numDims+2].qText.replace(",",""))*propMiddleRangeThresh,
+                                            Number(dataPages[r][numDims+2].qText.replace(",",""))*propLowerRangeThresh];
             }
 //need else condition here - having trouble with number of dimension handling
             //create the measure bar height as an additional data measure, this is driven from properties
@@ -122,13 +125,13 @@ define( [
                 // console.log('hcDataType: ',typeof hcData);
                 // console.log('hcData: ',hcData);
 
-                var margin = {top: 5, right: 20, bottom: 20, left: 60};
+                var margin = {top: 5, right: 20, bottom: 10*hcData.length, left: 60};
 
                 // Chart object width
                 var width = $element.width() - margin.left - margin.right;
 
                 // Chart object height
-                var height = ($element.height()/hcData.length) - margin.top - margin.bottom - hcData.length*10;//subtract 20 for bottom margin clipping
+                var height = ($element.height()/hcData.length) - margin.top - margin.bottom;// - hcData.length*10;//subtract addtl for bottom margin clipping
 
                 // Chart object id
                 var id = "container_" + layout.qInfo.qId;
@@ -152,7 +155,7 @@ define( [
                 .enter().append("svg")
                   .attr("class", "bullet")
                   .attr("width", width + margin.left + margin.right)
-                  .attr("height", height + margin.top + margin.bottom)//height
+                  .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                   .call(chart);
@@ -177,10 +180,14 @@ define( [
                 $("#" + id+" line.marker").attr("stroke",layout.props.section3.markerColor);
 
                 //convert hex to rgb as first step of gradient creation
-                var rangeRGB = hexToRgb(layout.props.section4.rangeColor);
+                var rangeRGB          = hexToRgb(layout.props.section4.rangeColor),
+                    lowerRangeThresh  = (layout.props.section4.lowerThreshRangeColor),
+                    middleRangeThresh = (layout.props.section4.middleThreshRangeColor);
 
-                $("#" + id+" rect.range.s2").attr("fill","rgb("+Math.floor(rangeRGB.r*0.7)+", "+Math.floor(rangeRGB.g*0.7)+", "+Math.floor(rangeRGB.b*0.7)+")");
-                $("#" + id+" rect.range.s1").attr("fill","rgb("+Math.floor(rangeRGB.r*0.85)+", "+Math.floor(rangeRGB.g*0.85)+", "+Math.floor(rangeRGB.b*0.85)+")");
+console.log("middleColorNum: ",middleRangeThresh,"lowerColorNum: ",lowerRangeThresh);
+
+                $("#" + id+" rect.range.s2").attr("fill","rgb("+Math.floor(rangeRGB.r*middleRangeThresh)+", "+Math.floor(rangeRGB.g*middleRangeThresh)+", "+Math.floor(rangeRGB.b*middleRangeThresh)+")");
+                $("#" + id+" rect.range.s1").attr("fill","rgb("+Math.floor(rangeRGB.r*lowerRangeThresh)+", "+Math.floor(rangeRGB.g*lowerRangeThresh)+", "+Math.floor(rangeRGB.b*lowerRangeThresh)+")");
                 $("#" + id+" rect.range.s0").attr("fill","rgb("+rangeRGB.r+", "+rangeRGB.g+", "+rangeRGB.b+")");
             },
             resize: function ($el, layout) {

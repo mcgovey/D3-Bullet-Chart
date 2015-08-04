@@ -134,6 +134,57 @@ define( [], function () {
         component: "dropdown",
         options: colorOptions
     };
+    var middleThreshRangeColor = {
+        ref : "props.section4.middleThreshRangeColor",
+        label : "Change lower range gradient",
+        type : "integer",
+        defaultValue: 0.85,
+        min : 0,
+        max : 1.55,
+        step : .05,
+        component: "slider"
+    };
+    var lowerThreshRangeColor = {
+        ref : "props.section4.lowerThreshRangeColor",
+        label : "Change middle range gradient",
+        type : "integer",
+        defaultValue: 0.7,
+        min : 0,
+        max : 1.55,
+        step : .05,
+        component: "slider"
+    };
+    var lowerThreshRange = {
+        ref : "props.section4.lowerThreshRange",
+        label : "Change lower range",
+        type : "integer",
+        defaultValue: 0.5,
+        min : 0,
+        max : 1.05,
+        step : .05,
+        component: "slider"
+    };
+    var middleThreshRange = {
+        ref : "props.section4.middleThreshRange",
+        label : "Change middle range",
+        type : "integer",
+        defaultValue: 0.75,
+        min : 0,
+        max : 1.05,
+        step : .05,
+        component: "slider"
+    };
+    var upperThreshRange = {
+        ref : "props.section4.upperThreshRange",
+        label : "Change upper range",
+        type : "integer",
+        defaultValue: 1,
+        min : 0,
+        max : 1.05,
+        step : .05,
+        component: "slider"
+    };
+
 
 
     //----------final properties creation---------------
@@ -188,7 +239,12 @@ define( [], function () {
                             type: "items",
                             label: "Range",
                             items: {
-                                rangeColor: rangeColor
+                                rangeColor: rangeColor,
+                                lowerThreshRangeColor: lowerThreshRangeColor,
+                                middleThreshRangeColor: middleThreshRangeColor,
+                                upperThreshRange: upperThreshRange,
+                                middleThreshRange: middleThreshRange,
+                                lowerThreshRange:lowerThreshRange
                             }
                         }
                     }
