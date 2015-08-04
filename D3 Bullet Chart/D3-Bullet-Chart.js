@@ -116,6 +116,7 @@ define( [
             }
 
           }
+
           //Loop through array again to bind the maximum range to the array
           for (var r = 0; r < dataPages.length; r++) {
             dataObject[r]["rangeMax"]  = [rangeMax];
@@ -128,15 +129,15 @@ define( [
             definition: props,
             initialProperties: {
                     qHyperCubeDef: {
-                    qDimensions: [],
-                    qMeasures: [],
-                    qInitialDataFetch: [
-                        {
-                            qWidth: 10,
-                            qHeight: 100
-                        }
-                    ]
-                }
+                      qDimensions: [],
+                      qMeasures: [],
+                      qInitialDataFetch: [
+                          {
+                              qWidth: 10,
+                              qHeight: 100
+                          }
+                      ]
+                    }
             },
             paint: function ( $element, layout ) {
 
@@ -145,16 +146,31 @@ define( [
                     hcData = createDataArray(hc,layout);
 
                 // console.log('hc: ', hc);
-                // console.log('hcData: ',hcData);
+                console.log('hcData: ', hcData);
+                // hcData.splice(2,1);
+                var numOfBarsAllowed;
+                //check that not too many bars are included
+                if (Math.floor($element.height()/75)===0) {
+                  numOfBarsAllowed = 1
+                } else {
+                  numOfBarsAllowed = Math.floor($element.height()/75)
+                }
 
-                var margin = {top: 5, right: 20, bottom: 10*hcData.length, left: 60};
+                console.log('numOfBarsAllowed: ', numOfBarsAllowed,"length: ",hcData.length);
+
+                if (hcData.length>numOfBarsAllowed) {
+                  hcData.splice(numOfBarsAllowed,hcData.length-numOfBarsAllowed);
+                };
+
+                console.log('hcData: ', hcData);
+
+                var margin = {top: 5, right: 20, bottom: 25, left: 60};
 
                 // Chart object width
                 var width = $element.width() - margin.left - margin.right;
 
                 // Chart object height
                 var height = ($element.height()/hcData.length) - margin.top - margin.bottom;// - hcData.length*10;//subtract addtl for bottom margin clipping
-
                 // Chart object id
                 var id = "container_" + layout.qInfo.qId;
 
@@ -177,7 +193,7 @@ define( [
                 .enter().append("svg")
                   .attr("class", "bullet")
                   .attr("width", width + margin.left + margin.right)
-                  .attr("height", height + margin.top + margin.bottom)
+                  .attr("height", height + margin.top + margin.bottom - 2)
                 .append("g")
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                   .call(chart);
