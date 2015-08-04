@@ -1,17 +1,10 @@
 div.divbullet {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  /*margin: auto;*/
-  /*padding-top: 40px;*/
   position: relative;
-  /*width: 960px;*/
 }
 
 .bullet { font: 10px sans-serif; }
 .bullet .marker { stroke-width: 2px; }
 .bullet .tick line { stroke: #666; stroke-width: .5px; }
-/*.bullet .range.s0 { fill: #eee; }
-.bullet .range.s1 { fill: #ddd; }
-.bullet .range.s2 { fill: #ccc; }*/
-/*.bullet .measure { fill: darkblue; }*/
 .bullet .title { font-size: 14px; font-weight: bold; }
 .bullet .subtitle { fill: #999; }

@@ -110,8 +110,8 @@ define( [
             //set range max to zero if the configuration is set to not create a single axis for all dimensions
             if (propUniformAxis==true) {
               //Find the biggest number in the current array and compare it to 
-              if (Math.max.apply(null,dataObject[r]["measures"],dataObject[r]["markers"],dataObject[r]["ranges"])>rangeMax) {
-                rangeMax=Math.max.apply(null,dataObject[r]["measures"],dataObject[r]["markers"],dataObject[r]["ranges"]);
+              if (Math.max(dataObject[r]["measures"],dataObject[r]["markers"],dataObject[r]["ranges"][0])>rangeMax) {
+                rangeMax=Math.max(dataObject[r]["measures"],dataObject[r]["markers"],dataObject[r]["ranges"][0]);
               }
             }
 
@@ -144,8 +144,8 @@ define( [
                 var hc = layout.qHyperCube,
                     hcData = createDataArray(hc,layout);
 
-                // console.log('hcDataType: ',typeof hcData);
-                console.log('hcData: ',hcData);
+                // console.log('hc: ', hc);
+                // console.log('hcData: ',hcData);
 
                 var margin = {top: 5, right: 20, bottom: 10*hcData.length, left: 60};
 
