@@ -15,7 +15,18 @@ define( [
     function (props, $, bullet) {
         'use strict';
 
-        function hexToRgb(hex) {
+        //Create function that returns 0 if the value passed is NaN or less than 0
+        var validateBulletNums = function (val){
+          var enteredVal = Number(val),
+            finalVal=0;
+          if (enteredVal>0) {
+            finalVal=enteredVal;
+          }
+          return finalVal;
+        };
+
+
+        var hexToRgb = function (hex) {
             // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
             var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
             hex = hex.replace(shorthandRegex, function(m, r, g, b) {
@@ -75,21 +86,21 @@ define( [
             //check number of dimensions and build object based on the expressions available
             if (numMeasures==1) {
               //use numDims to account for when chart does not have dimensions
-              dataObject[r]["measures"] = [Number(dataPages[r][numDims].qText.replace(",",""))];
+              dataObject[r]["measures"] = [validateBulletNums(dataPages[r][numDims].qText.replace(",",""))];
               dataObject[r]["markers"]  = [0];
               dataObject[r]["ranges"]   = [0,0,0];
             }
             if (numMeasures==2) {
-              dataObject[r]["measures"] = [Number(dataPages[r][numDims].qText.replace(",",""))];
-              dataObject[r]["markers"]  = [Number(dataPages[r][numDims+1].qText.replace(",",""))];
+              dataObject[r]["measures"] = [validateBulletNums(dataPages[r][numDims].qText.replace(",",""))];
+              dataObject[r]["markers"]  = [validateBulletNums(dataPages[r][numDims+1].qText.replace(",",""))];
               dataObject[r]["ranges"]   = [0,0,0];
             }
             if (numMeasures==3)  {
-              dataObject[r]["measures"] = [Number(dataPages[r][numDims].qText.replace(",",""))];
-              dataObject[r]["markers"]  = [Number(dataPages[r][numDims+1].qText.replace(",",""))];
-              dataObject[r]["ranges"]   = [Number(dataPages[r][numDims+2].qText.replace(",",""))*propUpperRangeThresh,
-                                            Number(dataPages[r][numDims+2].qText.replace(",",""))*propMiddleRangeThresh,
-                                            Number(dataPages[r][numDims+2].qText.replace(",",""))*propLowerRangeThresh];
+              dataObject[r]["measures"] = [validateBulletNums(dataPages[r][numDims].qText.replace(",",""))];
+              dataObject[r]["markers"]  = [validateBulletNums(dataPages[r][numDims+1].qText.replace(",",""))];
+              dataObject[r]["ranges"]   = [validateBulletNums(dataPages[r][numDims+2].qText.replace(",",""))*propUpperRangeThresh,
+                                            validateBulletNums(dataPages[r][numDims+2].qText.replace(",",""))*propMiddleRangeThresh,
+                                            validateBulletNums(dataPages[r][numDims+2].qText.replace(",",""))*propLowerRangeThresh];
             }
 //need else condition here - having trouble with number of dimension handling
             //create the measure bar height as an additional data measure, this is driven from properties
@@ -183,8 +194,6 @@ define( [
                 var rangeRGB          = hexToRgb(layout.props.section4.rangeColor),
                     lowerRangeThresh  = (layout.props.section4.lowerThreshRangeColor),
                     middleRangeThresh = (layout.props.section4.middleThreshRangeColor);
-
-console.log("middleColorNum: ",middleRangeThresh,"lowerColorNum: ",lowerRangeThresh);
 
                 $("#" + id+" rect.range.s2").attr("fill","rgb("+Math.floor(rangeRGB.r*middleRangeThresh)+", "+Math.floor(rangeRGB.g*middleRangeThresh)+", "+Math.floor(rangeRGB.b*middleRangeThresh)+")");
                 $("#" + id+" rect.range.s1").attr("fill","rgb("+Math.floor(rangeRGB.r*lowerRangeThresh)+", "+Math.floor(rangeRGB.g*lowerRangeThresh)+", "+Math.floor(rangeRGB.b*lowerRangeThresh)+")");
