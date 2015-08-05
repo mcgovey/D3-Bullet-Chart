@@ -136,9 +136,9 @@ define( [], function () {
     };
     var middleThreshRangeColor = {
         ref : "props.section4.middleThreshRangeColor",
-        label : "Change lower range gradient",
+        label : "Change middle range gradient",
         type : "integer",
-        defaultValue: 0.85,
+        defaultValue: 0.7,
         min : 0,
         max : 1.55,
         step : .05,
@@ -146,9 +146,9 @@ define( [], function () {
     };
     var lowerThreshRangeColor = {
         ref : "props.section4.lowerThreshRangeColor",
-        label : "Change middle range gradient",
+        label : "Change lower range gradient",
         type : "integer",
-        defaultValue: 0.7,
+        defaultValue: 0.85,
         min : 0,
         max : 1.55,
         step : .05,

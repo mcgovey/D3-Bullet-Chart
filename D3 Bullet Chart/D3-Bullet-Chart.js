@@ -15,7 +15,7 @@ define( [
     function (props, $, bullet) {
         'use strict';
 
-        //Create function that returns 0 if the value passed is NaN or less than 0
+        //Function that returns 0 if the value passed is NaN or less than 0
         var validateBulletNums = function (val){
           var enteredVal = Number(val),
             finalVal=0;
@@ -25,7 +25,7 @@ define( [
           return finalVal;
         };
 
-
+        //Function to convert hex value to rgb array
         var hexToRgb = function (hex) {
             // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
             var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -41,10 +41,9 @@ define( [
             } : null;
         };
 
+        //Function to take hypercube data and turn it into d3 readable array
         var createDataArray = function (hypercubeData, layout){
-          
-          // console.log(layout);
-
+        
           //get dimension label if it exists, if not create an empty string
           if (layout.props.section1.dimLabel) { 
             var dimLabel=layout.props.section1.dimLabel;
@@ -75,7 +74,7 @@ define( [
             if (numDims!==0) {
               dataObject.push({ "title"   : dataPages[r][0].qText});
 
-              //check for subtitles in 
+              //check for subtitles in the menu text box
               if (propShowDimSubTitles==true) {
                 dataObject[r]["subtitle"]  = dimLabel;
               }
@@ -145,31 +144,26 @@ define( [
                 var hc = layout.qHyperCube,
                     hcData = createDataArray(hc,layout);
 
-                // console.log('hc: ', hc);
-                console.log('hcData: ', hcData);
-                // hcData.splice(2,1);
                 var numOfBarsAllowed;
-                //check that not too many bars are included
+                //check that not too many bars are trying to be displayed
                 if (Math.floor($element.height()/75)===0) {
                   numOfBarsAllowed = 1
                 } else {
                   numOfBarsAllowed = Math.floor($element.height()/75)
                 }
 
-                console.log('numOfBarsAllowed: ', numOfBarsAllowed,"length: ",hcData.length);
-
+                //if there are more dimensions in the array than the number of bars allowed then reduce the size of the array
                 if (hcData.length>numOfBarsAllowed) {
                   hcData.splice(numOfBarsAllowed,hcData.length-numOfBarsAllowed);
                 };
 
-                console.log('hcData: ', hcData);
-
+                // Create margin - should be replaced by dynamic numbers when this is eventually a responsive viz
                 var margin = {top: 5, right: 20, bottom: 25, left: 60};
 
-                // Chart object width
+                // Set chart object width
                 var width = $element.width() - margin.left - margin.right;
 
-                // Chart object height
+                // Set chart object height
                 var height = ($element.height()/hcData.length) - margin.top - margin.bottom;// - hcData.length*10;//subtract addtl for bottom margin clipping
                 // Chart object id
                 var id = "container_" + layout.qInfo.qId;
@@ -187,7 +181,6 @@ define( [
                     .width(width)
                     .height(height);
 
-            //----------need to replace datavar with hypercube data
                 var svg = d3.select("#" + id).selectAll("svg")
                   .data(hcData)
                 .enter().append("svg")
@@ -222,6 +215,7 @@ define( [
                     lowerRangeThresh  = (layout.props.section4.lowerThreshRangeColor),
                     middleRangeThresh = (layout.props.section4.middleThreshRangeColor);
 
+                //bind the colors to the ranges on the chart
                 $("#" + id+" rect.range.s2").attr("fill","rgb("+Math.floor(rangeRGB.r*middleRangeThresh)+", "+Math.floor(rangeRGB.g*middleRangeThresh)+", "+Math.floor(rangeRGB.b*middleRangeThresh)+")");
                 $("#" + id+" rect.range.s1").attr("fill","rgb("+Math.floor(rangeRGB.r*lowerRangeThresh)+", "+Math.floor(rangeRGB.g*lowerRangeThresh)+", "+Math.floor(rangeRGB.b*lowerRangeThresh)+")");
                 $("#" + id+" rect.range.s0").attr("fill","rgb("+rangeRGB.r+", "+rangeRGB.g+", "+rangeRGB.b+")");

@@ -1,5 +1,4 @@
 (function() {
-//start bullet code
 
 // Chart design based on the recommendations of Stephen Few. Implementation
 // based on the work of Clint Ivy, Jamie Love, and Jason Davies.
@@ -25,25 +24,18 @@ d3.bullet = function() {
           rangeMax = getRangeMax.call(this, d, i).slice().sort(d3.descending),
           g = d3.select(this);
 
-// console.log("rangeMax",rangeMax);
-if (rangeMax==0) {
-      // Compute the new x-scale.
-      var x1 = d3.scale.linear()
-          .domain([0, Math.max(rangez[0], markerz[0], measurez[0])])
-          .range(reverse ? [width, 0] : [0, width]);
-} else {
-      // Compute the new x-scale.
-      var x1 = d3.scale.linear()
-          .domain([0, rangeMax])
-          .range(reverse ? [width, 0] : [0, width]);
-}
-//Old scale calc          
-      // // Compute the new x-scale.
-      // var x1 = d3.scale.linear()
-      //     .domain([0, Math.max(rangez[0], markerz[0], measurez[0])])
-      //     .range(reverse ? [width, 0] : [0, width]);
-
-      // Retrieve the old x-scale, if this is an update.
+      //set the x-axis scale based on the menu setting for universal vs independent
+      if (rangeMax==0) {
+            // Compute the new x-scale.
+            var x1 = d3.scale.linear()
+                .domain([0, Math.max(rangez[0], markerz[0], measurez[0])])
+                .range(reverse ? [width, 0] : [0, width]);
+      } else {
+            // Compute the new x-scale.
+            var x1 = d3.scale.linear()
+                .domain([0, rangeMax])
+                .range(reverse ? [width, 0] : [0, width]);
+      }
       var x0 = this.__chart__ || d3.scale.linear()
           .domain([0, Infinity])
           .range(x1.range());
@@ -261,5 +253,4 @@ function bulletWidth(x) {
     return Math.abs(x(d) - x0);
   };
 }
-//end bullet code
 })();
