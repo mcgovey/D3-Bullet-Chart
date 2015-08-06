@@ -200,7 +200,7 @@ define( [], function () {
     //Axis configuration
     var uniformAxisBool = {
         ref : "props.section5.uniformAxisBool",
-        label : "Same axis for all dimensions?",
+        label : "Consistent axis for all dimensions",
         type : "boolean",
         defaultValue : true
     };

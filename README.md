@@ -3,14 +3,14 @@ Qlik Sense Extension for Dimensional Bullet Charts using D3
 
 ## Project Description
 
-This project intends to provide an interactive bullet chart using D3 that allows the user to visualize data across a dimension.  The linear gauge chart in Qlik Sense allows for some of the same functionality but does not allow the user to create a bar for each dimension.
+This extension allows the user to create a bullet chart in Qlik Sense (using the D3.js library) that allows the user to visualize up to three measures across one or no dimensions.  The linear gauge chart in Qlik Sense only allows for a maximum of two dimensions and does not allow the user to create a bar for each dimension.  This project intends to provide the user with a much more extensive ;) charting option.
 
 
 ## Installation Instructions
 
-To use this extension, place the 'D3 Bullet Chart' folder in the directory C:\Users\%USERNAME%\Documents\Qlik\Sense\Extensions.  Launch Qlik Sense and open an app, edit the app, and drag the 'D3 Bullet Chart' Chart Object into the sheet where you'd like it to appear. Add a dimension (optional) and at least one measure. 
+To use this extension, place the 'D3 Bullet Chart' folder in the directory C:\Users\%USERNAME%\Documents\Qlik\Sense\Extensions.  Launch Qlik Sense and open an app, edit the app, and drag the 'D3 Bullet Chart' Chart Object into the sheet where you'd like it to appear. Add a dimension (optional) and at least one measure.  Under the 'Chart Configuration' menu, there are a number of options to change colors and sizing of the various pieces of the chart.
 
-To use the sample application included with the extension, copy the file 'D3 Bullet Chart Sample App.qvf' into the directory C:\Users\%USERNAME%\Documents\Qlik\Sense\Apps then the application will appear in your Qlik Sense Hub.
+There is also a sample application included in the folder, copy the file 'D3 Bullet Chart Sample App.qvf' into the directory C:\Users\%USERNAME%\Documents\Qlik\Sense\Apps then the application will appear in your Qlik Sense Hub.  This sample app provides examples of how the extension can be altered to provide different looks.
 
 Have fun!
 
