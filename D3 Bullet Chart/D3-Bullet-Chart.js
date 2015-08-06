@@ -143,8 +143,10 @@ define( [
                 //set hypercube variable and call function on hcData to return data in a json format
                 var hc = layout.qHyperCube,
                     hcData = createDataArray(hc,layout);
-
-                var numOfBarsAllowed;
+                    
+                //create variables for number of bars allowed and the size of the dimension area for text
+                var numOfBarsAllowed,
+                    dimWidth=Number(layout.props.section1.dimWidth);
                 //check that not too many bars are trying to be displayed
                 if (Math.floor($element.height()/75)===0) {
                   numOfBarsAllowed = 1
@@ -158,7 +160,7 @@ define( [
                 };
 
                 // Create margin - should be replaced by dynamic numbers when this is eventually a responsive viz
-                var margin = {top: 5, right: 20, bottom: 25, left: 60};
+                var margin = {top: 5, right: 20, bottom: 25, left: dimWidth};
 
                 // Set chart object width
                 var width = $element.width() - margin.left - margin.right;

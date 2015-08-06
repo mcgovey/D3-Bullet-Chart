@@ -88,6 +88,7 @@ define( [], function () {
         ]
 
     //----------individual accordion labels-------------
+    //Dimensions
     var dimLabel = {
         ref: "props.section1.dimLabel",
         label: "Dimension Label",
@@ -101,6 +102,16 @@ define( [], function () {
         type : "boolean",
         defaultValue : false
     };
+    var dimWidth = {
+        ref : "props.section1.dimWidth",
+        label : "Change space for dimension text",
+        type : "number",
+        defaultValue : 60,
+        min : 10,
+        max : 200,
+        component : "slider"
+    };
+    //Measure configuration
     var barSize = {
         ref : "props.section2.barSize",
         label : "Change size of bar",
@@ -118,6 +129,7 @@ define( [], function () {
         component: "dropdown",
         options: colorOptions
     };
+    //Marker configuration
     var markerColor = {
         ref : "props.section3.markerColor",
         label : "Change marker color",
@@ -126,6 +138,7 @@ define( [], function () {
         component: "dropdown",
         options: colorOptions
     };
+    //Range configuration
     var rangeColor = {
         ref : "props.section4.rangeColor",
         label : "Change range color",
@@ -184,6 +197,7 @@ define( [], function () {
         step : .05,
         component: "slider"
     };
+    //Axis configuration
     var uniformAxisBool = {
         ref : "props.section5.uniformAxisBool",
         label : "Same axis for all dimensions?",
@@ -222,42 +236,43 @@ define( [], function () {
                             type: "items",
                             label: "Dimensions",
                             items: {
-                                dimensionLabel: dimLabel,
-                                dimensionTitleBtn : showDimSubTitles
+                                dimensionLabel:         dimLabel,
+                                dimensionTitleBtn :     showDimSubTitles,
+                                dimWidth:               dimWidth
                             }
                         },
                         header2: {
                             type: "items",
                             label: "Measure Bar",
                             items: {
-                                barSize: barSize,
-                                barColor: barColor
+                                barSize:                barSize,
+                                barColor:               barColor
                             }
                         },
                         header3: {
                             type: "items",
                             label: "Marker",
                             items: {
-                                markerColor: markerColor
+                                markerColor:            markerColor
                             }
                         },
                         header4: {
                             type: "items",
                             label: "Range",
                             items: {
-                                rangeColor: rangeColor,
-                                lowerThreshRangeColor: lowerThreshRangeColor,
+                                rangeColor:             rangeColor,
+                                lowerThreshRangeColor:  lowerThreshRangeColor,
                                 middleThreshRangeColor: middleThreshRangeColor,
-                                upperThreshRange: upperThreshRange,
-                                middleThreshRange: middleThreshRange,
-                                lowerThreshRange:lowerThreshRange
+                                upperThreshRange:       upperThreshRange,
+                                middleThreshRange:      middleThreshRange,
+                                lowerThreshRange:       lowerThreshRange
                             }
                         },
                         header5: {
                             type: "items",
                             label: "Axis",
                             items: {
-                                uniformAxisBool: uniformAxisBool
+                                uniformAxisBool:        uniformAxisBool
                             }
                         }
                     }
