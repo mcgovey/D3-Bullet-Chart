@@ -167,6 +167,7 @@ define( [
 
                 // Set chart object height
                 var height = ($element.height()/hcData.length) - margin.top - margin.bottom;// - hcData.length*10;//subtract addtl for bottom margin clipping
+
                 // Chart object id
                 var id = "container_" + layout.qInfo.qId;
 
@@ -193,6 +194,7 @@ define( [
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                   .call(chart);
 
+                //create labels for each bullet
                 var title = svg.append("g")
                   .style("text-anchor", "end")
                   .attr("transform", "translate(-6," + height / 2 + ")");
