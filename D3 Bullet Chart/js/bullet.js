@@ -13,8 +13,7 @@ d3.bullet = function() {
       measureHeight = bulletMeasureHeight,
       width = 380,
       height = 30,
-      tickFormat = null,
-      maxTickHeight;
+      tickFormat = null;
   // For each small multiple…
   function bullet(g) {
     g.each(function(d, i) {
@@ -111,16 +110,9 @@ d3.bullet = function() {
           .attr("x2", x1)
           .attr("y1", height / 6)
           .attr("y2", height * 5 / 6);
+
       // Compute the tick format.
       var format = tickFormat || x1.tickFormat(8);
-
-      // Ensure max tick height is less than 11
-      if ((height*1.05)>11) {
-        maxTickHeight = 11;
-      }
-      else {
-        maxTickHeight = height*1.05;
-      };
 
       // Update the tick groups.
       var tick = g.selectAll("g.tick")
@@ -136,11 +128,12 @@ d3.bullet = function() {
 
       tickEnter.append("line")
           .attr("y1", height)
-          .attr("y2", height+maxTickHeight);
+          .attr("y2", height * 7 / 6);
+
       tickEnter.append("text")
           .attr("text-anchor", "middle")
           .attr("dy", "1em")
-          .attr("y", height+maxTickHeight)
+          .attr("y", height * 7 / 6)
           .text(format);
 
       // Transition the entering ticks to the new scale, x1.
@@ -157,10 +150,10 @@ d3.bullet = function() {
 
       tickUpdate.select("line")
           .attr("y1", height)
-          .attr("y2", height+maxTickHeight);
+          .attr("y2", height * 7 / 6);
 
       tickUpdate.select("text")
-          .attr("y", height+maxTickHeight);
+          .attr("y", height * 7 / 6);
 
       // Transition the exiting ticks to the new scale, x1.
       tick.exit().transition()
