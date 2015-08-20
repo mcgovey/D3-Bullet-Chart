@@ -16,16 +16,16 @@ Have fun!
 
 ## Examples
 Standard example, basic colors with a uniform axis
-![First example image](https://github.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%201.PNG)
+![First example image](https://raw.githubusercontent.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%201.PNG)
 
 Example with altered colors and an independent axis
-![Second example image](https://github.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%202.PNG)
+![Second example image](https://raw.githubusercontent.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%202.PNG)
 
 Bullet chart example with no dimensions
-![Third example image](https://github.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%203.PNG)
+![Third example image](https://raw.githubusercontent.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%203.PNG)
 
 Two bullet charts with various configuration options shown
-![Fourth example image](https://github.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%204.PNG)
+![Fourth example image](https://raw.githubusercontent.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%204.PNG)
 
 # Extension Information
 
