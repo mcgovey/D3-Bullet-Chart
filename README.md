@@ -14,6 +14,19 @@ There is also a sample application included in the folder, copy the file 'D3 Bul
 
 Have fun!
 
+## Examples
+Standard example, basic colors with a uniform axis
+![First example image](https://github.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%201.PNG)
+
+Example with altered colors and an independent axis
+![Second example image](https://github.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%202.PNG)
+
+Bullet chart example with no dimensions
+![Third example image](https://github.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%203.PNG)
+
+Two bullet charts with various configuration options shown
+![Fourth example image](https://github.com/mcgovey/D3-Bullet-Chart/blob/master/images/Bullet%20Chart%204.PNG)
+
 # Extension Information
 
 This extension was developed using a D3 example for bullet charts as a base.  However, this extension allows you to add a dimension that will create multiple bullet charts within a single extension.
