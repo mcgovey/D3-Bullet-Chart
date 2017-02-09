@@ -138,6 +138,11 @@ define( [
                       ]
                     }
             },
+            support : {
+              snapshot: true,
+              export: true,
+              exportData : true
+            },
             paint: function ( $element, layout ) {
 
                 //set hypercube variable and call function on hcData to return data in a json format
