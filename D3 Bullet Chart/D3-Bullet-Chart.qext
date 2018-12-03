@@ -1,9 +1,0 @@
-{
-    "name" : "D3 Bullet Chart",
-    "description" : "Bullet chart using D3.js library",
-    "icon" : "bar-chart-horizontal",
-    "type" : "visualization",
-    "version": "1.0.1",
-    "preview" : "bulletchart.png",
-    "author": "Kevin McGovern"
-}
