@@ -1,6 +1,8 @@
 # D3 Bullet Chart Extension
 Qlik Sense Extension for Dimensional Bullet Charts using D3
 
+[![CircleCI](https://circleci.com/gh/qlik-oss/D3-Bullet-Chart.svg?style=svg)](https://circleci.com/gh/qlik-oss/D3-Bullet-Chart)
+
 ## Project Description
 
 This extension allows the user to create a bullet chart in Qlik Sense (using the D3.js library) that allows the user to visualize up to three measures across one or no dimensions.  The linear gauge chart in Qlik Sense only allows for a maximum of two dimensions and does not allow the user to create a bar for each dimension.  This project intends to provide the user with a much more extensive ;) charting option.
