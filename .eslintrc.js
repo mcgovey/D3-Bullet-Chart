@@ -57,7 +57,8 @@ module.exports = {
     "no-implied-eval": ["error"],
     "no-debugger": ["warn"],
     "no-unreachable": ["warn"],
-    "quotes": ["warn", "single", { "avoidEscape": true }]
+    "quotes": ["warn", "single", { "avoidEscape": true }],
+    "func-style": ["warn", "declaration", { "allowArrowFunctions": true }]
   },
   extends: [
     "eslint:recommended"

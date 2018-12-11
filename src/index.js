@@ -6,17 +6,17 @@ import props from './properties';
 import 'css-loader!./stylesheet.css';
 
 //Function that returns 0 if the value passed is NaN or less than 0
-var validateBulletNums = function (val) {
+function validateBulletNums(val) {
   var enteredVal = Number(val),
     finalVal = 0;
   if (enteredVal > 0) {
     finalVal = enteredVal;
   }
   return finalVal;
-};
+}
 
 //Function to convert hex value to rgb array
-var hexToRgb = function (hex) {
+function hexToRgb(hex) {
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
   hex = hex.replace(shorthandRegex, function (m, r, g, b) {
@@ -29,10 +29,10 @@ var hexToRgb = function (hex) {
     g: parseInt(result[2], 16),
     b: parseInt(result[3], 16)
   } : null;
-};
+}
 
 //Function to take hypercube data and turn it into d3 readable array
-var createDataArray = function (hypercubeData, layout) {
+function createDataArray(hypercubeData, layout) {
   //get dimension label if it exists, if not create an empty string
   if (layout.props.section1.dimLabel) {
     var dimLabel = layout.props.section1.dimLabel;
@@ -109,7 +109,7 @@ var createDataArray = function (hypercubeData, layout) {
   }
 
   return dataObject;
-};
+}
 
 function paint($element, layout) {
   //set hypercube variable and call function on hcData to return data in a json format
