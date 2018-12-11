@@ -1,8 +1,8 @@
 
 import * as d3 from 'd3';
-import $ from 'jquery';
-import props from './js/properties';
 import { bullet } from 'd3v4-bullet';
+import $ from 'jquery';
+import props from './properties';
 import 'css-loader!./stylesheet.css';
 
 //Function that returns 0 if the value passed is NaN or less than 0
