@@ -41,7 +41,7 @@ module.exports = {
     "no-cond-assign": ["warn"],
     "no-fallthrough": ["warn"],
     "no-undef": ["error"],
-    "no-unused-vars": ["error"],
+    "no-unused-vars": ["warn"],
     "no-use-before-define": ["warn", { "functions": false, "classes": false, "variables": false }],
     "no-useless-escape": ["warn"],
     "no-useless-return": ["warn"],
@@ -56,6 +56,8 @@ module.exports = {
     "no-eval": ["error"],
     "no-implied-eval": ["error"],
     "no-debugger": ["warn"],
+    "no-unreachable": ["warn"],
+    "quotes": ["warn", "single", { "avoidEscape": true }]
   },
   extends: [
     "eslint:recommended"
