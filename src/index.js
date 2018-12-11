@@ -12,7 +12,7 @@ define([
   './js/properties'
   , 'jquery'
   , './js/bullet'
-  , 'css!./stylesheet.css'
+  , 'css-loader!./stylesheet.css'
 ],
 function (props, $, bullet) {
   'use strict';
