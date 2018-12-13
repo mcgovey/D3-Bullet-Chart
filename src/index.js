@@ -305,9 +305,4 @@ export default {
       throw e;
     }
   },
-  resize: function ($element, layout) {
-    // is this function even necessary?
-    // afaik, without an explicit resize function, paint will be called automatically instead
-    this.paint($element, layout);
-  }
 };

@@ -6,7 +6,7 @@ defaults: &defaults
     - image: circleci/node:stretch
   environment:
     GITHUB_ORG: "qlik-oss"
-    GITHUB_REPO: "PLSmartPivot"
+    GITHUB_REPO: "D3-Bullet-Chart"
     PACKAGE_NAME: "qlik-bullet-chart"
 
 jobs:
