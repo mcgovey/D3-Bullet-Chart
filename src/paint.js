@@ -1,6 +1,8 @@
 import * as d3 from 'd3';
-import { bullet } from 'd3v4-bullet';
 import $ from 'jquery';
+import './vendor/bullet';
+
+const { bullet } = d3;
 
 //Function that returns 0 if the value passed is NaN or less than 0
 function validateBulletNums(val) {
