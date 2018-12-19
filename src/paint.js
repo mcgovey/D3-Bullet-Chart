@@ -1,8 +1,6 @@
 import * as d3 from 'd3';
 import $ from 'jquery';
-import './vendor/bullet';
-
-const { bullet } = d3;
+import bullet from './vendor/bullet';
 
 //Function that returns 0 if the value passed is NaN or less than 0
 function validateBulletNums(val) {
@@ -179,16 +177,22 @@ export default function paint($element, layout) {
     .attr('dy', '1em')
     .text(function (d) { return d.subtitle; });
 
+  // Colors (with fallbacks to previous properties)
+  const { props: { section2, section3, section4 } } = layout;
+  const barColor = section2.barColor.color || section2.barColor;
+  const markerColor = section3.markerColor.color || section3.markerColor;
+  const rangeColor = section4.rangeColor.color || section4.rangeColor;
+
   //fill the bullet with the color specified in the menu
-  $('#' + id + ' rect.measure').attr('fill', layout.props.section2.barColor);
+  $('#' + id + ' rect.measure').attr('fill', barColor);
 
   //color the marker with the color specified in the menu
-  $('#' + id + ' line.marker').attr('stroke', layout.props.section3.markerColor);
+  $('#' + id + ' line.marker').attr('stroke', markerColor);
 
   //convert hex to rgb as first step of gradient creation
-  var rangeRGB = hexToRgb(layout.props.section4.rangeColor),
-    lowerRangeThresh = (layout.props.section4.lowerThreshRangeColor),
-    middleRangeThresh = (layout.props.section4.middleThreshRangeColor);
+  var rangeRGB = hexToRgb(rangeColor),
+    lowerRangeThresh = section4.lowerThreshRangeColor,
+    middleRangeThresh = section4.middleThreshRangeColor;
 
   //bind the colors to the ranges on the chart
   $('#' + id + ' rect.range.s2').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * middleRangeThresh) + ', ' + Math.floor(rangeRGB.g * middleRangeThresh) + ', ' + Math.floor(rangeRGB.b * middleRangeThresh) + ')');
