@@ -212,25 +212,22 @@ export default {
     type: 'items',
     component: 'accordion',
     items: {
-      dimensions: {
-        uses: 'dimensions'
-        , min: 0
-        , max: 1
-      },
-      measures: {
-        uses: 'measures'
-        , min: 1
-        , max: 3
+      data:{
+        uses: 'data',
+        items:{
+          dimensions:{
+            disabledRef: ''
+          },
+          measures: {
+            disabledRef: ''
+          }
+        }
       },
       sorting: {
         uses: 'sorting'
       },
       appearance: {
-        uses: 'settings'
-      },
-      configuration: {
-        component: 'expandable-items',
-        label: 'Chart Configuration',
+        uses: 'settings',
         items: {
           header1: {
             type: 'items',
@@ -276,7 +273,7 @@ export default {
             }
           }
         }
-      }
+      },
     }
   },
   initialProperties: {
@@ -289,6 +286,16 @@ export default {
           qHeight: 100
         }
       ]
+    }
+  },
+  data : {
+    dimensions: {
+      min: 0,
+      max: 1
+    },
+    measures: {
+      min: 1,
+      max: 3
     }
   },
   support: {
