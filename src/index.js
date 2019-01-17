@@ -202,7 +202,7 @@ var upperThreshRange = {
 //Axis configuration
 var uniformAxisBool = {
   ref: 'props.section5.uniformAxisBool',
-  label: 'Consistent axis for dimension ',
+  label: 'Consistent for all axis dimension values',
   type: 'boolean',
   defaultValue: true
 };
