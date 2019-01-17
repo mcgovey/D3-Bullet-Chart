@@ -2,9 +2,37 @@ div.divbullet {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: relative;
 }
-
+rect{
+  z-index: 10;
+}
 .bullet { font: 10px sans-serif; }
 .bullet .marker { stroke-width: 2px; }
 .bullet .tick line { stroke: #666; stroke-width: .5px; }
 .bullet .title { font-size: 14px; font-weight: bold; }
 .bullet .subtitle { fill: #999; }
+.tooltip {
+  position: fixed;
+  padding: 5px;
+  width: auto;
+  background-color: #404040;
+  border-radius: 5px;
+  z-index: 100000;
+  pointer-events: none;
+}
+
+.tooltip .ttheading {
+  margin: 5px;
+  font-family: sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 18px;
+  color: white;
+}
+
+.tooltip .ttvalue {
+  margin: 5px;
+  font-family: sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  color: white;
+}

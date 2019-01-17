@@ -198,4 +198,34 @@ export default function paint($element, layout) {
   $('#' + id + ' rect.range.s2').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * middleRangeThresh) + ', ' + Math.floor(rangeRGB.g * middleRangeThresh) + ', ' + Math.floor(rangeRGB.b * middleRangeThresh) + ')');
   $('#' + id + ' rect.range.s1').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * lowerRangeThresh) + ', ' + Math.floor(rangeRGB.g * lowerRangeThresh) + ', ' + Math.floor(rangeRGB.b * lowerRangeThresh) + ')');
   $('#' + id + ' rect.range.s0').attr('fill', 'rgb(' + rangeRGB.r + ', ' + rangeRGB.g + ', ' + rangeRGB.b + ')');
+  d3.selectAll(`#${id}`).append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', '0')
+    .append('p')
+    .attr('class', 'ttvalue')
+    .append('p')
+    .attr('class', 'ttheading')
+  ;
+  d3.selectAll('rect')
+    .on('mouseenter', function(d,e){
+      var event = d3.event;
+      var x = event.pageX;
+      var y = event.pageY;
+      d3.select('.ttvalue')
+        .text(d);
+      d3.select('.tooltip')
+        .style('left', x + 'px')
+        .style('top', y + 'px')
+        .transition()
+        .delay(750)
+        .style('opacity', '0.95')
+      ;
+    })
+    .on('mouseleave',function(){
+      d3.select('.tooltip')
+        .style('opacity', '0')
+        .transition()
+        .remove
+      ;
+    });
 }
