@@ -90,7 +90,7 @@ var colorOptions = [{
 ];
 
 //----------individual accordion labels-------------
-//Dimensions
+//Dimension
 var dimLabel = {
   ref: 'props.section1.dimLabel',
   label: 'Dimension Label',
@@ -100,7 +100,7 @@ var dimLabel = {
 
 var showDimSubTitles = {
   ref: 'props.section1.showDimSubTitles',
-  label: 'Display Subtitles',
+  label: 'Display Label',
   type: 'boolean',
   defaultValue: false
 };
@@ -202,7 +202,7 @@ var upperThreshRange = {
 //Axis configuration
 var uniformAxisBool = {
   ref: 'props.section5.uniformAxisBool',
-  label: 'Consistent axis for all dimensions',
+  label: 'Consistent axis for dimension ',
   type: 'boolean',
   defaultValue: true
 };
@@ -231,7 +231,7 @@ export default {
         items: {
           header1: {
             type: 'items',
-            label: 'Dimensions',
+            label: 'Dimension',
             items: {
               dimensionLabel: dimLabel,
               dimensionTitleBtn: showDimSubTitles,
