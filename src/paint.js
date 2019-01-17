@@ -171,11 +171,19 @@ export default function paint($element, layout) {
   title.append('text')
     .attr('class', 'title')
     .text(function (d) { return d.title; });
-
-  title.append('text')
+  var subtitle = svg.append('g')
+    .style('text-anchor', 'start')
+    .attr('transform', `translate(-${margin.left},` + height / 2 + ')');
+  subtitle.append('text')
     .attr('class', 'subtitle')
     .attr('dy', '1em')
+    .attr('clip-path', 'url(#clipText)')
     .text(function (d) { return d.subtitle; });
+  var clip = subtitle.append('clipPath')
+    .attr('id','clipText' );
+  clip.append('rect')
+    .attr('width', margin.left - 5 +'px')
+    .attr('height', '25px');
 
   // Colors (with fallbacks to previous properties)
   const { props: { section2, section3, section4 } } = layout;
