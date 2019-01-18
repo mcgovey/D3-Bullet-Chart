@@ -228,8 +228,8 @@ export default function paint($element, layout) {
         .text(d);
       d3.select(container)
         .select('.tooltip')
-        .style('left', x + 'px')
-        .style('top', y + 'px')
+        .style('left', x + 10 + 'px')
+        .style('top', y - 35 + 'px')
         // .style('z-index', '1')
         .transition()
         .delay(750)
