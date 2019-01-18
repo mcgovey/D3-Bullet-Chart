@@ -3,7 +3,7 @@ import paint from './paint';
 import './stylesheet.css';
 
 //----------individual accordion labels-------------
-//Dimensions
+//Dimension
 var dimLabel = {
   ref: 'props.section1.dimLabel',
   label: 'Dimension Label',
@@ -13,7 +13,7 @@ var dimLabel = {
 
 var showDimSubTitles = {
   ref: 'props.section1.showDimSubTitles',
-  label: 'Display Subtitles',
+  label: 'Display Label',
   type: 'boolean',
   defaultValue: false
 };
@@ -122,7 +122,7 @@ var upperThreshRange = {
 //Axis configuration
 var uniformAxisBool = {
   ref: 'props.section5.uniformAxisBool',
-  label: 'Consistent axis for all dimensions',
+  label: 'Consistent for all axis dimension values',
   type: 'boolean',
   defaultValue: true
 };
@@ -132,29 +132,26 @@ export default {
     type: 'items',
     component: 'accordion',
     items: {
-      dimensions: {
-        uses: 'dimensions'
-        , min: 0
-        , max: 1
-      },
-      measures: {
-        uses: 'measures'
-        , min: 1
-        , max: 3
+      data:{
+        uses: 'data',
+        items:{
+          dimensions:{
+            disabledRef: ''
+          },
+          measures: {
+            disabledRef: ''
+          }
+        }
       },
       sorting: {
         uses: 'sorting'
       },
       appearance: {
-        uses: 'settings'
-      },
-      configuration: {
-        component: 'expandable-items',
-        label: 'Chart Configuration',
+        uses: 'settings',
         items: {
           header1: {
             type: 'items',
-            label: 'Dimensions',
+            label: 'Dimension',
             items: {
               dimensionLabel: dimLabel,
               dimensionTitleBtn: showDimSubTitles,
@@ -196,7 +193,7 @@ export default {
             }
           }
         }
-      }
+      },
     }
   },
   initialProperties: {
@@ -209,6 +206,16 @@ export default {
           qHeight: 100
         }
       ]
+    }
+  },
+  data : {
+    dimensions: {
+      min: 0,
+      max: 1
+    },
+    measures: {
+      min: 1,
+      max: 3
     }
   },
   support: {
