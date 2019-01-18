@@ -2,9 +2,6 @@ div.divbullet {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: relative;
 }
-rect{
-  z-index: 10;
-}
 .bullet { font: 10px sans-serif; }
 .bullet .marker { stroke-width: 2px; }
 .bullet .tick line { stroke: #666; stroke-width: .5px; }
@@ -16,7 +13,6 @@ rect{
   width: auto;
   background-color: #404040;
   border-radius: 5px;
-  z-index: 100000;
   pointer-events: none;
 }
 

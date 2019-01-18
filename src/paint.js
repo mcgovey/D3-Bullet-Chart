@@ -198,34 +198,49 @@ export default function paint($element, layout) {
   $('#' + id + ' rect.range.s2').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * middleRangeThresh) + ', ' + Math.floor(rangeRGB.g * middleRangeThresh) + ', ' + Math.floor(rangeRGB.b * middleRangeThresh) + ')');
   $('#' + id + ' rect.range.s1').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * lowerRangeThresh) + ', ' + Math.floor(rangeRGB.g * lowerRangeThresh) + ', ' + Math.floor(rangeRGB.b * lowerRangeThresh) + ')');
   $('#' + id + ' rect.range.s0').attr('fill', 'rgb(' + rangeRGB.r + ', ' + rangeRGB.g + ', ' + rangeRGB.b + ')');
-  d3.selectAll(`#${id}`).append('div')
+  d3.select(`#${id}`).append('div')
     .attr('class', 'tooltip')
     .style('opacity', '0')
     .append('p')
-    .attr('class', 'ttvalue')
-    .append('p')
-    .attr('class', 'ttheading')
-  ;
+    .attr('class', 'ttvalue');
   d3.selectAll('rect')
-    .on('mouseenter', function(d,e){
+    .on('mouseenter', function(d){
       var event = d3.event;
       var x = event.pageX;
       var y = event.pageY;
-      d3.select('.ttvalue')
+      // var test =d3.select('#' + id);
+      var container = this.parentNode.parentNode.parentNode; // d3.select('#' + id) always gives back the first object's element container, so when a user hover on a 2nd or 3rd or.. bar, its tooltip won't be rendered but the first object tooltip will ,,, DUE to the id not being updated
+      // console.log('d3.select(`#${id}`) ', test._groups[0][0], test);
+      // console.log('nodelist[i] ', nodelist[i]);
+      // // console.log(test._groups[0]);
+      // console.log(id);
+      // console.log(d3.select(container).select('.ttvalue'));
+      // console.log($element);
+      // console.log(d3.select(this));
+
+      // console.log(this.parentNode.parentNode.parentNode);
+      // console.log(nodelist);
+
+      // console.log(layout.qInfo.qId);
+
+      d3.select(container)
+        .select('.ttvalue')
         .text(d);
-      d3.select('.tooltip')
+      d3.select(container)
+        .select('.tooltip')
         .style('left', x + 'px')
         .style('top', y + 'px')
+        // .style('z-index', '1')
         .transition()
         .delay(750)
         .style('opacity', '0.95')
       ;
     })
     .on('mouseleave',function(){
-      d3.select('.tooltip')
+      d3.selectAll('.tooltip')
         .style('opacity', '0')
         .transition()
-        .remove
+        // .remove()
       ;
     });
 }
