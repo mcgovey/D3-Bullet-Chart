@@ -108,7 +108,7 @@ function createDataArray(hypercubeData, layout) {
   return dataObject;
 }
 
-export default function paint($element, layout) {
+export default function paint($element, layout, g) {
   //set hypercube variable and call function on hcData to return data in a json format
   var hc = layout.qHyperCube,
     hcData = createDataArray(hc, layout);
@@ -205,6 +205,7 @@ export default function paint($element, layout) {
     .attr('class', 'ttvalue');
   d3.selectAll('rect')
     .on('mouseenter', function(d){
+      if(g._inEditState) return;
       var event = d3.event;
       var x = event.pageX;
       var y = event.pageY;
