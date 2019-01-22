@@ -209,20 +209,7 @@ export default function paint($element, layout, g) {
       var event = d3.event;
       var x = event.pageX;
       var y = event.pageY;
-      // var test =d3.select('#' + id);
       var container = this.parentNode.parentNode.parentNode; // d3.select('#' + id) always gives back the first object's element container, so when a user hover on a 2nd or 3rd or.. bar, its tooltip won't be rendered but the first object tooltip will ,,, DUE to the id not being updated
-      // console.log('d3.select(`#${id}`) ', test._groups[0][0], test);
-      // console.log('nodelist[i] ', nodelist[i]);
-      // // console.log(test._groups[0]);
-      // console.log(id);
-      // console.log(d3.select(container).select('.ttvalue'));
-      // console.log($element);
-      // console.log(d3.select(this));
-
-      // console.log(this.parentNode.parentNode.parentNode);
-      // console.log(nodelist);
-
-      // console.log(layout.qInfo.qId);
 
       d3.select(container)
         .select('.ttvalue')
@@ -231,7 +218,6 @@ export default function paint($element, layout, g) {
         .select('.tooltip')
         .style('left', x + 10 + 'px')
         .style('top', y - 35 + 'px')
-        // .style('z-index', '1')
         .transition()
         .delay(750)
         .style('opacity', '0.95')
@@ -241,7 +227,6 @@ export default function paint($element, layout, g) {
       d3.selectAll('.tooltip')
         .style('opacity', '0')
         .transition()
-        // .remove()
       ;
     });
 }
