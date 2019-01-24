@@ -108,7 +108,7 @@ function createDataArray(hypercubeData, layout) {
   return dataObject;
 }
 
-export default function paint($element, layout) {
+export default function paint($element, layout, g) {
   //set hypercube variable and call function on hcData to return data in a json format
   var hc = layout.qHyperCube,
     hcData = createDataArray(hc, layout);
@@ -198,4 +198,35 @@ export default function paint($element, layout) {
   $('#' + id + ' rect.range.s2').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * middleRangeThresh) + ', ' + Math.floor(rangeRGB.g * middleRangeThresh) + ', ' + Math.floor(rangeRGB.b * middleRangeThresh) + ')');
   $('#' + id + ' rect.range.s1').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * lowerRangeThresh) + ', ' + Math.floor(rangeRGB.g * lowerRangeThresh) + ', ' + Math.floor(rangeRGB.b * lowerRangeThresh) + ')');
   $('#' + id + ' rect.range.s0').attr('fill', 'rgb(' + rangeRGB.r + ', ' + rangeRGB.g + ', ' + rangeRGB.b + ')');
+  d3.select(`#${id}`).append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', '0')
+    .append('p')
+    .attr('class', 'ttvalue');
+  d3.selectAll('rect')
+    .on('mouseenter', function(d){
+      if(g._inEditState) return;
+      var event = d3.event;
+      var x = event.pageX;
+      var y = event.pageY;
+      var container = this.parentNode.parentNode.parentNode; // d3.select('#' + id) always gives back the first object's element container, so when a user hover on a 2nd or 3rd or.. bar, its tooltip won't be rendered but the first object tooltip will ,,, DUE to the id not being updated
+
+      d3.select(container)
+        .select('.ttvalue')
+        .text(d);
+      d3.select(container)
+        .select('.tooltip')
+        .style('left', x + 10 + 'px')
+        .style('top', y - 35 + 'px')
+        .transition()
+        .delay(750)
+        .style('opacity', '0.95')
+      ;
+    })
+    .on('mouseleave',function(){
+      d3.selectAll('.tooltip')
+        .style('opacity', '0')
+        .transition()
+      ;
+    });
 }
