@@ -165,7 +165,7 @@ export default function bullet() {
             console.log(d);
             console.log(measurezTxt);
         return this.textContent ||format(d);
-        return format(measurezTxt[0].num);
+        // return format(measurezTxt[0].num);
       });
       // tick.data(measurezTxt, function(d){
       //   console.log(d);
