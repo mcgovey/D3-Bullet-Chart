@@ -155,17 +155,30 @@ export default function bullet() {
       } else {
         maxTickHeight = height * 1.05;
       }
-
+      var shi =(x)=> d3.scale.linear()
+              .domain([0,x])
+              .range(reverse ? [width, 0] : [0, width]);
       // Update the tick groups.
       var tick = g.selectAll("g.tick")
-          .data(measurezTxt, function(d) {
-        return d;
+          .data(x1.ticks(8), function(d) {
+            // x1.ticks(8);
+            console.log(d);
+            console.log(measurezTxt);
+        return this.textContent ||format(d);
+        return format(measurezTxt[0].num);
       });
+      // tick.data(measurezTxt, function(d){
+      //   console.log(d);
 
+      //   return d.num;
+      // })
       // Initialize the ticks with the old scale, x0.
       var tickEnter = tick
+    // .data(measurezTxt)
         .enter()
         .append("g")
+        // .data(measurezTxt)
+        // .enter()
         .attr("class", "tick")
         .attr("transform", bulletTranslate(x0))
         .style("opacity", 1e-6);
@@ -175,13 +188,19 @@ export default function bullet() {
         .attr("y1", height)
         .attr("y2", height + maxTickHeight);
       tickEnter
+        // .enter()
+        .data(measurezTxt)
         .append("text")
         .attr("text-anchor", "middle")
         .attr("dy", "1em")
         .attr("y", height + maxTickHeight)
         // .text(format);
         .text(function(d){
-          return d.txt
+          console.log(d);
+          if(d.txt){
+            return d.txt
+          }
+          return d;
         });
 
       // Transition the entering ticks to the new scale, x1.
@@ -297,7 +316,11 @@ function bulletMeasuresTxt(d) {
 }
 function bulletTranslate(x) {
   return function(d) {
-    return "translate(" + x(d.num) + ",0)";
+    console.log(d);
+    if(d.num){
+      return "translate(" + x(d.num) + ",0)";
+    }
+    return "translate(" + x(d) + ",0)";
   };
 }
 
