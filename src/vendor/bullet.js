@@ -159,17 +159,6 @@ export default function bullet() {
       // Update the tick groups.
       var tick = g.selectAll("g.tick")
           .data(measurezTxt, function(d) {
-        // console.log(x1);
-
-        console.log(d);
-        // console.log(measurez, measurezTxt);
-        // if(measurez[0] !== measurezTxt[0]){
-
-        //   var test = formats.parse(measurez[0])
-        //   console.log(test);
-        //   // return x2(d);
-        // }
-        // return this.textContent || format(d);
         return d;
       });
 
@@ -308,7 +297,6 @@ function bulletMeasuresTxt(d) {
 }
 function bulletTranslate(x) {
   return function(d) {
-    // return "translate(" + x(d) + ",0)";
     return "translate(" + x(d.num) + ",0)";
   };
 }

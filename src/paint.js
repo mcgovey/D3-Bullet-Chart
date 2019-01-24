@@ -75,32 +75,24 @@ function createDataArray(hypercubeData, layout) {
     //check number of dimensions and build object based on the expressions available
     if (numMeasures == 1) {
       //use numDims to account for when chart does not have dimensions
-      // dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qText.replace(',', ''))];
-      dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qNum/*.replace(',', '')*/)];
-      dataObject[r]['measuresTxt'] = [{ txt: validateBulletNums(dataPages[r][numDims].qText/*.replace(',', '').replace('/','-').replace('/','-')*/), num: validateBulletNums(dataPages[r][numDims].qNum) }];
+      dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qNum)];
+      dataObject[r]['measuresTxt'] = [{ txt: validateBulletNums(dataPages[r][numDims].qText), num: validateBulletNums(dataPages[r][numDims].qNum) }];
       dataObject[r]['markers'] = [0];
       dataObject[r]['ranges'] = [0, 0, 0];
     }
     if (numMeasures == 2) {
-      // dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qText.replace(',', ''))];
-      // dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qText.replace(',', ''))];
-      dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qNum/*.replace(',', '')*/)];
-      dataObject[r]['measuresTxt'] = [{ txt: validateBulletNums(dataPages[r][numDims].qText/*.replace(',', '').replace('/','-').replace('/','-')*/), num: validateBulletNums(dataPages[r][numDims].qNum) }];
-      dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qNum/*.replace(',', '')*/)];
+      dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qNum)];
+      dataObject[r]['measuresTxt'] = [{ txt: validateBulletNums(dataPages[r][numDims].qText), num: validateBulletNums(dataPages[r][numDims].qNum) }];
+      dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qNum)];
       dataObject[r]['ranges'] = [0, 0, 0];
     }
     if (numMeasures == 3) {
-      // dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qText.replace(',', ''))];
-      // dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qText.replace(',', ''))];
-      // dataObject[r]['ranges'] = [validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propUpperRangeThresh,
-      //   validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propMiddleRangeThresh,
-      //   validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propLowerRangeThresh];
-      dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qNum/*.replace(',', '')*/)];
-      dataObject[r]['measuresTxt'] = [{ txt: validateBulletNums(dataPages[r][numDims].qText/*.replace(',', '')/*.replace('/','-').replace('/','-')*/),num: validateBulletNums(dataPages[r][numDims].qNum) }];
-      dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qNum/*.replace(',', '')*/)];
-      dataObject[r]['ranges'] = [validateBulletNums(dataPages[r][numDims + 2].qNum/*.replace(',', '')*/) * propUpperRangeThresh,
-        validateBulletNums(dataPages[r][numDims + 2].qNum/*.replace(',', '')*/) * propMiddleRangeThresh,
-        validateBulletNums(dataPages[r][numDims + 2].qNum/*.replace(',', '')*/) * propLowerRangeThresh];
+      dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qNum)];
+      dataObject[r]['measuresTxt'] = [{ txt: validateBulletNums(dataPages[r][numDims].qText),num: validateBulletNums(dataPages[r][numDims].qNum) }];
+      dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qNum)];
+      dataObject[r]['ranges'] = [validateBulletNums(dataPages[r][numDims + 2].qNum) * propUpperRangeThresh,
+        validateBulletNums(dataPages[r][numDims + 2].qNum) * propMiddleRangeThresh,
+        validateBulletNums(dataPages[r][numDims + 2].qNum) * propLowerRangeThresh];
     }
     //create the measure bar height as an additional data measure, this is driven from properties
     dataObject[r]['measureBarHeight'] = [propMeasureBarSize];
