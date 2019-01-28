@@ -36,6 +36,14 @@ var barSize = {
   max: 100,
   component: 'slider'
 };
+var barNum = {
+  ref: 'props.section2.barNum',
+  label: 'Quantity of bars showed(max. 50)',
+  type: 'integer',
+  defaultValue: 4,
+  min: 1,
+  max: 50
+};
 var barColor = {
   ref: 'props.section2.barColor',
   label: 'Change bar color',
@@ -163,6 +171,7 @@ export default {
             label: 'Measure Bar',
             items: {
               barSize: barSize,
+              barNum: barNum,
               barColor: barColor
             }
           },

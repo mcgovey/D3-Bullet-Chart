@@ -114,28 +114,22 @@ export default function paint($element, layout) {
     hcData = createDataArray(hc, layout);
 
   //create variables for number of bars allowed and the size of the dimension area for text
-  var numOfBarsAllowed,
-    dimWidth = Number(layout.props.section1.dimWidth);
-  //check that not too many bars are trying to be displayed
-  if (Math.floor($element.height() / 75) === 0) {
-    numOfBarsAllowed = 1;
-  } else {
-    numOfBarsAllowed = Math.floor($element.height() / 75);
-  }
+  var dimWidth = Number(layout.props.section1.dimWidth),
+    barsNum = layout.props.section2.barNum;
 
-  //if there are more dimensions in the array than the number of bars allowed then reduce the size of the array
-  if (hcData.length > numOfBarsAllowed) {
-    hcData.splice(numOfBarsAllowed, hcData.length - numOfBarsAllowed);
-  }
 
   // Create margin - should be replaced by dynamic numbers when this is eventually a responsive viz
   var margin = { top: 5, right: 20, bottom: 25, left: dimWidth };
 
   // Set chart object width
   var width = $element.width() - margin.left - margin.right;
+  var containerWidth = $element.width() - 10;
 
   // Set chart object height
-  var height = ($element.height() / hcData.length) - margin.top - margin.bottom;// - hcData.length*10;//subtract addtl for bottom margin clipping
+  if(barsNum > hcData.length){
+    barsNum = hcData.length;
+  }
+  var height = $element.height() / barsNum - margin.top - margin.bottom - 1;
 
   // Chart object id
   var id = 'container_' + layout.qInfo.qId;
@@ -146,7 +140,7 @@ export default function paint($element, layout) {
     $('#' + id).empty();
   } else {
     // if it hasn't been created, create it with the appropiate id and size
-    $element.append($('<div />').attr('id', id).attr('class', 'divbullet').width(width).height(height));
+    $element.append($('<div />').attr('id', id).attr('class', 'divbullet').width(containerWidth).height($element.height()));
   }
 
   var chart = bullet()
