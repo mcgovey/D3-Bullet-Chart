@@ -233,8 +233,9 @@ export default {
     exportData: true
   },
   paint: function ($element, layout) {
+    var g = this;
     try {
-      paint($element, layout);
+      paint($element, layout, g);
     }
     catch (e) {
       console.error(e); // eslint-disable-line no-console
