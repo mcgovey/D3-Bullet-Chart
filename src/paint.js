@@ -4,6 +4,8 @@ import bullet from './vendor/bullet';
 
 //Function that returns 0 if the value passed is NaN or less than 0
 function validateBulletNums(val) {
+  // console.log(val);
+
   var enteredVal = Number(val),
     finalVal = 0;
   if (enteredVal > 0) {
@@ -30,6 +32,7 @@ function hexToRgb(hex) {
 
 //Function to take hypercube data and turn it into d3 readable array
 function createDataArray(hypercubeData, layout) {
+
   //get dimension label if it exists, if not create an empty string
   if (layout.props.section1.dimLabel) {
     var dimLabel = layout.props.section1.dimLabel;
@@ -52,6 +55,7 @@ function createDataArray(hypercubeData, layout) {
     numDims = hypercubeData.qDimensionInfo.length,
     dataPages = hypercubeData.qDataPages[0].qMatrix;
   var rangeMax = 0;
+  console.log(dataPages);
 
   //loop through all rows in data cube
   for (var r = 0; r < dataPages.length; r++) {
@@ -81,12 +85,21 @@ function createDataArray(hypercubeData, layout) {
       dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qText.replace(',', ''))];
       dataObject[r]['ranges'] = [0, 0, 0];
     }
+    // if (numMeasures == 3) {
+    //   dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qText.replace(',', ''))];
+    //   dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qText.replace(',', ''))];
+    //   dataObject[r]['ranges'] = [validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propUpperRangeThresh,
+    //     validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propMiddleRangeThresh,
+    //     validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propLowerRangeThresh];
+    // }
     if (numMeasures == 3) {
       dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qText.replace(',', ''))];
       dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qText.replace(',', ''))];
       dataObject[r]['ranges'] = [validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propUpperRangeThresh,
         validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propMiddleRangeThresh,
         validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propLowerRangeThresh];
+      dataObject[r]['qDataObj'] = dataPages[r];
+
     }
     //create the measure bar height as an additional data measure, this is driven from properties
     dataObject[r]['measureBarHeight'] = [propMeasureBarSize];

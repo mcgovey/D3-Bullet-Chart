@@ -18,28 +18,35 @@ export default function bullet () {
   // For each small multiple…
   function bullet(g) {
     g.each(function(d, i) {
+      console.log(this, d , i);
+
       var rangez = ranges.call(this, d, i).slice().sort(d3.descending),
           markerz = markers.call(this, d, i).slice().sort(d3.descending),
-          measurez = measures.call(this, d, i).slice().sort(d3.descending),
+          measurez = measures.call(this, d, i)/*.slice().sort(d3.descending)*/,
           measureHeightz = measureHeight.call(this, d, i).slice().sort(d3.descending),
           rangeMax = getRangeMax.call(this, d, i).slice().sort(d3.descending),
           g = d3.select(this);
+      console.log(measurez);
+      console.log(markerz);
 
       //set the x-axis scale based on the menu setting for universal vs independent
       if (rangeMax==0) {
-            // Compute the new x-scale.
-            var x1 = d3.scale.linear()
-                .domain([0, Math.max(rangez[0], markerz[0], measurez[0])])
-                .range(reverse ? [width, 0] : [0, width]);
+        // Compute the new x-scale.
+        var x1 = d3.scale.linear()
+        .domain([0, Math.max(rangez[0], markerz[0], measurez.qNum)])
+        .range(reverse ? [width, 0] : [0, width]);
       } else {
             // Compute the new x-scale.
             var x1 = d3.scale.linear()
                 .domain([0, rangeMax])
                 .range(reverse ? [width, 0] : [0, width]);
       }
+      console.log(rangeMax);
+
       var x0 = this.__chart__ || d3.scale.linear()
           .domain([0, Infinity])
           .range(x1.range());
+      console.log(x1.range());
 
       // Stash the new scale.
       this.__chart__ = x1;
@@ -70,10 +77,15 @@ export default function bullet () {
 
       // Update the measure rects.
       var measure = g.selectAll("rect.measure")
-          .data(measurez);
+          .data([measurez.qNum]);
+      // console.log(x0);
 
       measure.enter().append("rect")
-          .attr("class", function(d, i) { return "measure s" + i; })
+          .attr("class", function(d, i) {
+            console.log(i);
+            console.log(d);
+
+            return "measure s" + i; })
           .attr("width", w0)
           .attr("height", height * measureHeightz[0] * .01)
           .attr("x", reverse ? x0 : 0)
@@ -82,7 +94,7 @@ export default function bullet () {
           .duration(duration)
           .attr("width", w1)
           .attr("x", reverse ? x1 : 0);
-
+      // debugger;
       measure.transition()
           .duration(duration)
           .attr("width", w1)
@@ -124,7 +136,9 @@ export default function bullet () {
 
       // Update the tick groups.
       var tick = g.selectAll("g.tick")
-          .data(x1.ticks(8), function(d) {
+          .data(x1(measurez), function(d) {
+            console.log(d);
+
             return this.textContent || format(d);
           });
 
@@ -196,8 +210,13 @@ export default function bullet () {
 
   // measures (actual, forecast)
   bullet.measures = function(x) {
+    console.log(x);
+
     if (!arguments.length) return measures;
     measures = x;
+    console.log(bullet);
+    console.log(measures);
+
     return bullet;
   };
 
@@ -229,6 +248,8 @@ export default function bullet () {
 };
 
 function bulletMeasureHeight(d){
+  // console.log(d);
+
   return d.measureBarHeight;
 }
 
@@ -245,7 +266,9 @@ function bulletMarkers(d) {
 }
 
 function bulletMeasures(d) {
-  return d.measures;
+  console.log(d);
+  return d.qDataObj[1]; //TODO : spicify for all casses of Dim and Mes numbers
+  // return d.measures;
 }
 
 function bulletTranslate(x) {
@@ -257,6 +280,8 @@ function bulletTranslate(x) {
 function bulletWidth(x) {
   var x0 = x(0);
   return function(d) {
+    console.log(d);
+
     return Math.abs(x(d) - x0);
   };
 }
