@@ -6,5 +6,5 @@ div.divbullet {
 .bullet { font: 10px sans-serif; }
 .bullet .marker { stroke-width: 2px; }
 .bullet .tick line { stroke: #666; stroke-width: .5px; }
-.bullet .title { font-size: 14px; font-weight: bold; }
+.bullet .title { font-size: 14px; }
 .bullet .subtitle { fill: #999; }
