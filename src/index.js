@@ -69,55 +69,31 @@ var rangeColor = {
   component: 'color-picker',
   dualOutput: true
 };
-var middleThreshRangeColor = {
-  ref: 'props.section4.middleThreshRangeColor',
-  label: 'Change middle range gradient',
-  type: 'integer',
-  defaultValue: 0.7,
-  min: 0,
-  max: 1.55,
-  step: .05,
-  component: 'slider'
-};
-var lowerThreshRangeColor = {
-  ref: 'props.section4.lowerThreshRangeColor',
-  label: 'Change lower range gradient',
-  type: 'integer',
-  defaultValue: 0.85,
-  min: 0,
-  max: 1.55,
-  step: .05,
-  component: 'slider'
-};
 var lowerThreshRange = {
   ref: 'props.section4.lowerThreshRange',
-  label: 'Change lower range',
-  type: 'integer',
-  defaultValue: 0.5,
+  label: 'Set lower range (%)',
+  type: 'number',
+  defaultValue: 50,
   min: 0,
-  max: 1.05,
-  step: .05,
-  component: 'slider'
+  max: 100,
+  change: function(data){
+    if(data.props.section4.lowerThreshRange > data.props.section4.middleThreshRange){
+      data.props.section4.lowerThreshRange = data.props.section4.middleThreshRange - 1;
+    }
+  }
 };
 var middleThreshRange = {
   ref: 'props.section4.middleThreshRange',
-  label: 'Change middle range',
-  type: 'integer',
-  defaultValue: 0.75,
+  type: 'number' ,
+  label: 'Set middle range (%)',
+  defaultValue: 75,
   min: 0,
-  max: 1.05,
-  step: .05,
-  component: 'slider'
-};
-var upperThreshRange = {
-  ref: 'props.section4.upperThreshRange',
-  label: 'Change upper range',
-  type: 'integer',
-  defaultValue: 1,
-  min: 0,
-  max: 1.05,
-  step: .05,
-  component: 'slider'
+  max: 100,
+  change: function(data){
+    if(data.props.section4.middleThreshRange < data.props.section4.lowerThreshRange){
+      data.props.section4.middleThreshRange = data.props.section4.lowerThreshRange +1;
+    }
+  }
 };
 //Axis configuration
 var uniformAxisBool = {
@@ -178,9 +154,6 @@ export default {
             label: 'Range',
             items: {
               rangeColor: rangeColor,
-              lowerThreshRangeColor: lowerThreshRangeColor,
-              middleThreshRangeColor: middleThreshRangeColor,
-              upperThreshRange: upperThreshRange,
               middleThreshRange: middleThreshRange,
               lowerThreshRange: lowerThreshRange
             }
