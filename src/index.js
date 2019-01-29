@@ -78,6 +78,9 @@ var lowerThreshRange = {
   max: 100,
   change: function(data){
     if(data.props.section4.lowerThreshRange > data.props.section4.middleThreshRange){
+      if(data.props.section4.middleThreshRange === 0){
+        data.props.section4.middleThreshRange = 1;
+      }
       data.props.section4.lowerThreshRange = data.props.section4.middleThreshRange - 1;
     }
   }
@@ -91,6 +94,9 @@ var middleThreshRange = {
   max: 100,
   change: function(data){
     if(data.props.section4.middleThreshRange < data.props.section4.lowerThreshRange){
+      if(data.props.section4.lowerThreshRange === 100){
+        data.props.section4.lowerThreshRange = 99;
+      }
       data.props.section4.middleThreshRange = data.props.section4.lowerThreshRange +1;
     }
   }
