@@ -173,7 +173,7 @@ export default function paint($element, layout) {
     .text(function (d) { return d.title; });
   var subtitle = svg.append('g')
     .style('text-anchor', 'start')
-    .attr('transform', `translate(-${margin.left},` + height / 2 + ')');
+    .attr('transform', `translate(-${margin.left},` +( (height / 2) + 5) +')');
   subtitle.append('text')
     .attr('class', 'subtitle')
     .attr('dy', '1em')
