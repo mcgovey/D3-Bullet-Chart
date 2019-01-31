@@ -3,16 +3,6 @@ import $ from 'jquery';
 import bullet from './vendor/bullet';
 
 //Function that returns 0 if the value passed is NaN or less than 0
-function validateBulletNums(val) {
-  // console.log(val);
-
-  var enteredVal = Number(val),
-    finalVal = 0;
-  if (enteredVal > 0) {
-    finalVal = enteredVal;
-  }
-  return finalVal;
-}
 
 //Function to convert hex value to rgb array
 function hexToRgb(hex) {
@@ -55,7 +45,6 @@ function createDataArray(hypercubeData, layout) {
     numDims = hypercubeData.qDimensionInfo.length,
     dataPages = hypercubeData.qDataPages[0].qMatrix;
   var rangeMax = 0;
-  console.log(dataPages);
 
   //loop through all rows in data cube
   for (var r = 0; r < dataPages.length; r++) {
@@ -76,30 +65,21 @@ function createDataArray(hypercubeData, layout) {
     //check number of dimensions and build object based on the expressions available
     if (numMeasures == 1) {
       //use numDims to account for when chart does not have dimensions
-      dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qText.replace(',', ''))];
+      dataObject[r]['measures'] = [dataPages[r][numDims].qNum];
       dataObject[r]['markers'] = [0];
       dataObject[r]['ranges'] = [0, 0, 0];
     }
     if (numMeasures == 2) {
-      dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qText.replace(',', ''))];
-      dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qText.replace(',', ''))];
+      dataObject[r]['measures'] = [dataPages[r][numDims].qNum];
+      dataObject[r]['markers'] = [dataPages[r][numDims + 1].qNum];
       dataObject[r]['ranges'] = [0, 0, 0];
     }
-    // if (numMeasures == 3) {
-    //   dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qText.replace(',', ''))];
-    //   dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qText.replace(',', ''))];
-    //   dataObject[r]['ranges'] = [validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propUpperRangeThresh,
-    //     validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propMiddleRangeThresh,
-    //     validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propLowerRangeThresh];
-    // }
     if (numMeasures == 3) {
-      dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qText.replace(',', ''))];
-      dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qText.replace(',', ''))];
-      dataObject[r]['ranges'] = [validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propUpperRangeThresh,
-        validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propMiddleRangeThresh,
-        validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propLowerRangeThresh];
-      dataObject[r]['qDataObj'] = dataPages[r];
-
+      dataObject[r]['measures'] = [dataPages[r][numDims].qNum];
+      dataObject[r]['markers'] = [dataPages[r][numDims + 1].qNum];
+      dataObject[r]['ranges'] = [dataPages[r][numDims + 2].qNum * propUpperRangeThresh,
+        dataPages[r][numDims + 2].qNum * propMiddleRangeThresh,
+        dataPages[r][numDims + 2].qNum * propLowerRangeThresh];
     }
     //create the measure bar height as an additional data measure, this is driven from properties
     dataObject[r]['measureBarHeight'] = [propMeasureBarSize];
