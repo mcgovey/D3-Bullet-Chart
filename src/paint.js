@@ -108,8 +108,8 @@ function createDataArray(hypercubeData, layout) {
   return dataObject;
 }
 
-export default function paint($element, layout, g) {
-  var containerClassName = g._inEditState ? 'divbullet edit_mode' : 'divbullet'; // TO-DO : clas Name doesn't change with changing modes
+export default function paint($element, layout, component) {
+
   //set hypercube variable and call function on hcData to return data in a json format
   var hc = layout.qHyperCube,
     hcData = createDataArray(hc, layout);
@@ -140,9 +140,9 @@ export default function paint($element, layout, g) {
     $('#' + id).empty();
   } else {
     // if it hasn't been created, create it with the appropiate id and size
-    $element.append($('<div />').attr('id', id).attr('class', containerClassName ).height($element.height()));
+    $element.append($('<div />').attr('id', id).attr('class', 'divbullet' ).height($element.height()));
   }
-
+  d3.select(`#${id}`).classed({ 'edit_mode' : component._inEditState });
   var chart = bullet()
     .width(width)
     .height(height);
