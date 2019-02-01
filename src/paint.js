@@ -2,8 +2,6 @@ import * as d3 from 'd3';
 import $ from 'jquery';
 import bullet from './vendor/bullet';
 
-//Function that returns 0 if the value passed is NaN or less than 0
-
 //Function to convert hex value to rgb array
 function hexToRgb(hex) {
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
@@ -47,14 +45,14 @@ function createDataArray(hypercubeData, layout) {
   var rangeMax = 0;
 
   //loop through all rows in data cube
-  for (var r = 0; r < dataPages.length; r++) {
+  for (var row = 0; row < dataPages.length; row++) {
     //use dimensions if one was created
     if (numDims !== 0) {
-      dataObject.push({ 'title': dataPages[r][0].qText });
+      dataObject.push({ 'title': dataPages[row][0].qText });
 
       //check for subtitles in the menu text box
       if (propShowDimSubTitles == true) {
-        dataObject[r]['subtitle'] = dimLabel;
+        dataObject[row]['subtitle'] = dimLabel;
       }
     }
     //if no dimensions were added, use the title listed
@@ -65,37 +63,37 @@ function createDataArray(hypercubeData, layout) {
     //check number of dimensions and build object based on the expressions available
     if (numMeasures == 1) {
       //use numDims to account for when chart does not have dimensions
-      dataObject[r]['measures'] = [dataPages[r][numDims].qNum];
-      dataObject[r]['markers'] = [0];
-      dataObject[r]['ranges'] = [0, 0, 0];
+      dataObject[row]['measures'] = [dataPages[row][numDims].qNum];
+      dataObject[row]['markers'] = [0];
+      dataObject[row]['ranges'] = [0, 0, 0];
     }
     if (numMeasures == 2) {
-      dataObject[r]['measures'] = [dataPages[r][numDims].qNum];
-      dataObject[r]['markers'] = [dataPages[r][numDims + 1].qNum];
-      dataObject[r]['ranges'] = [0, 0, 0];
+      dataObject[row]['measures'] = [dataPages[row][numDims].qNum];
+      dataObject[row]['markers'] = [dataPages[row][numDims + 1].qNum];
+      dataObject[row]['ranges'] = [0, 0, 0];
     }
     if (numMeasures == 3) {
-      dataObject[r]['measures'] = [dataPages[r][numDims].qNum];
-      dataObject[r]['markers'] = [dataPages[r][numDims + 1].qNum];
-      dataObject[r]['ranges'] = [dataPages[r][numDims + 2].qNum * propUpperRangeThresh,
-        dataPages[r][numDims + 2].qNum * propMiddleRangeThresh,
-        dataPages[r][numDims + 2].qNum * propLowerRangeThresh];
+      dataObject[row]['measures'] = [dataPages[row][numDims].qNum];
+      dataObject[row]['markers'] = [dataPages[row][numDims + 1].qNum];
+      dataObject[row]['ranges'] = [dataPages[row][numDims + 2].qNum * propUpperRangeThresh,
+        dataPages[row][numDims + 2].qNum * propMiddleRangeThresh,
+        dataPages[row][numDims + 2].qNum * propLowerRangeThresh];
     }
     //create the measure bar height as an additional data measure, this is driven from properties
-    dataObject[r]['measureBarHeight'] = [propMeasureBarSize];
+    dataObject[row]['measureBarHeight'] = [propMeasureBarSize];
 
     //set range max to zero if the configuration is set to not create a single axis for all dimensions
     if (propUniformAxis == true) {
       //Find the biggest number in the current array and compare it to
-      if (Math.max(dataObject[r]['measures'], dataObject[r]['markers'], dataObject[r]['ranges'][0]) > rangeMax) {
-        rangeMax = Math.max(dataObject[r]['measures'], dataObject[r]['markers'], dataObject[r]['ranges'][0]);
+      if (Math.max(dataObject[row]['measures'], dataObject[row]['markers'], dataObject[row]['ranges'][0]) > rangeMax) {
+        rangeMax = Math.max(dataObject[row]['measures'], dataObject[row]['markers'], dataObject[row]['ranges'][0]);
       }
     }
   }
 
   //Loop through array again to bind the maximum range to the array
-  for (var r = 0; r < dataPages.length; r++) {
-    dataObject[r]['rangeMax'] = [rangeMax];
+  for (var row = 0; row < dataPages.length; row++) {
+    dataObject[row]['rangeMax'] = [rangeMax];
   }
 
   return dataObject;
