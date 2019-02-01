@@ -190,12 +190,11 @@ export default function paint($element, layout, g) {
 
   //convert hex to rgb as first step of gradient creation
   var rangeRGB = hexToRgb(rangeColor);
-  // lowerRangeThresh = section4.lowerThreshRangeColor,
-  // middleRangeThresh = section4.middleThreshRangeColor;
-
+  const middleRangeThreshold = 0.7;
+  const lowerRangeThreshold = 0.85;
   //bind the colors to the ranges on the chart
-  $('#' + id + ' rect.range.s2').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * 0.7) + ', ' + Math.floor(rangeRGB.g * 0.7) + ', ' + Math.floor(rangeRGB.b * 0.7) + ')');
-  $('#' + id + ' rect.range.s1').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * 0.85) + ', ' + Math.floor(rangeRGB.g * 0.85) + ', ' + Math.floor(rangeRGB.b * 0.85) + ')');
+  $('#' + id + ' rect.range.s2').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * middleRangeThreshold) + ', ' + Math.floor(rangeRGB.g * middleRangeThreshold) + ', ' + Math.floor(rangeRGB.b * middleRangeThreshold) + ')');
+  $('#' + id + ' rect.range.s1').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * lowerRangeThreshold) + ', ' + Math.floor(rangeRGB.g * lowerRangeThreshold) + ', ' + Math.floor(rangeRGB.b * lowerRangeThreshold) + ')');
   $('#' + id + ' rect.range.s0').attr('fill', 'rgb(' + rangeRGB.r + ', ' + rangeRGB.g + ', ' + rangeRGB.b + ')');
   d3.select(`#${id}`).append('div')
     .attr('class', 'tooltip')
