@@ -76,12 +76,12 @@ var lowerThreshRange = {
   defaultValue: 50,
   min: 0,
   max: 100,
-  change: function(data){
-    if(data.props.section4.lowerThreshRange > data.props.section4.middleThreshRange){
-      if(data.props.section4.middleThreshRange === 0){
-        data.props.section4.middleThreshRange = 1;
+  change: ({ props: { section4 } }) => {
+    if(section4.lowerThreshRange > section4.middleThreshRange){
+      if(section4.middleThreshRange === 0){
+        section4.middleThreshRange = 1;
       }
-      data.props.section4.lowerThreshRange = data.props.section4.middleThreshRange - 1;
+      section4.lowerThreshRange = section4.middleThreshRange - 1;
     }
   }
 };
@@ -92,12 +92,12 @@ var middleThreshRange = {
   defaultValue: 75,
   min: 0,
   max: 100,
-  change: function(data){
-    if(data.props.section4.middleThreshRange < data.props.section4.lowerThreshRange){
-      if(data.props.section4.lowerThreshRange === 100){
-        data.props.section4.lowerThreshRange = 99;
+  change: ({ props: { section4 } }) => {
+    if(section4.middleThreshRange < section4.lowerThreshRange){
+      if(section4.lowerThreshRange === 100){
+        section4.lowerThreshRange = 99;
       }
-      data.props.section4.middleThreshRange = data.props.section4.lowerThreshRange +1;
+      section4.middleThreshRange = section4.lowerThreshRange + 1;
     }
   }
 };
