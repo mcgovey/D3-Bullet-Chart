@@ -1,6 +1,9 @@
-
 import paint from './paint';
 import './stylesheet.css';
+
+if (!window._babelPolyfill) { //eslint-disable-line no-underscore-dangle
+  require('@babel/polyfill');
+}
 
 //----------individual accordion labels-------------
 //Dimension
