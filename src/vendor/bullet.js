@@ -55,7 +55,7 @@ export default function bullet () {
       range.enter().append("rect")
           .attr("class", function(d, i) { return "range s" + i; })
           .attr("width", w0)
-          .attr("height", Math.abs(height))
+          .attr("height", height)
           .attr("x", reverse ? x0 : 0)
         .transition()
           .duration(duration)

@@ -129,7 +129,7 @@ export default function paint($element, layout, component) {
   if(barsNum > hcData.length){
     barsNum = hcData.length;
   }
-  var height = $element.height() / barsNum - margin.top - margin.bottom - 1;
+  var height =Math.abs($element.height() / barsNum - margin.top - margin.bottom - 1);
 
   // Chart object id
   var id = 'container_' + layout.qInfo.qId;
