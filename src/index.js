@@ -83,8 +83,11 @@ var lowerThreshRange = {
       }
       section4.lowerThreshRange = section4.middleThreshRange - 1;
     }
-    if(section4.lowerThreshRange < 0 || section4.lowerThreshRange > 100){
-      section4.lowerThreshRange = 50;
+    if(section4.lowerThreshRange < 0 ){
+      section4.lowerThreshRange = 0;
+    }
+    if(section4.lowerThreshRange > 100){
+      section4.lowerThreshRange = 100;
     }
   }
 };
@@ -102,8 +105,11 @@ var middleThreshRange = {
       }
       section4.middleThreshRange = section4.lowerThreshRange + 1;
     }
-    if(section4.middleThreshRange < 0 || section4.middleThreshRange > 100){
-      section4.middleThreshRange = 50;
+    if(section4.middleThreshRange < 0){
+      section4.middleThreshRange = 0;
+    }
+    if(section4.middleThreshRange > 100){
+      section4.middleThreshRange = 100;
     }
   }
 };
