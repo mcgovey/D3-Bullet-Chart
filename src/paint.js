@@ -74,9 +74,9 @@ function createDataArray(hypercubeData, layout) {
     if (numMeasures == 3) {
       dataObject[row]['measures'] = [dataPages[row][numDims].qNum];
       dataObject[row]['markers'] = [dataPages[row][numDims + 1].qNum];
-      dataObject[row]['ranges'] = [dataPages[row][numDims + 2].qNum * propUpperRangeThresh,
-        dataPages[row][numDims + 2].qNum * propMiddleRangeThresh,
-        dataPages[row][numDims + 2].qNum * propLowerRangeThresh];
+      dataObject[row]['ranges'] = [dataPages[row][numDims + 2].qNum ,
+        dataPages[row][numDims + 2].qNum * propMiddleRangeThresh/100,
+        dataPages[row][numDims + 2].qNum * propLowerRangeThresh/100];
     }
     //create the measure bar height as an additional data measure, this is driven from properties
     dataObject[row]['measureBarHeight'] = [propMeasureBarSize];
