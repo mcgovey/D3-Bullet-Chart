@@ -40,7 +40,6 @@ function createDataArray(hypercubeData, layout) {
   //create variables from layout settings
   var propShowDimSubTitles = layout.props.section1.showDimSubTitles,
     propMeasureBarSize = layout.props.section2.barSize,
-    propUpperRangeThresh = Number(layout.props.section4.upperThreshRange),
     propMiddleRangeThresh = Number(layout.props.section4.middleThreshRange),
     propLowerRangeThresh = Number(layout.props.section4.lowerThreshRange),
     propUniformAxis = layout.props.section5.uniformAxisBool;
@@ -84,9 +83,9 @@ function createDataArray(hypercubeData, layout) {
     if (numMeasures == 3) {
       dataObject[r]['measures'] = [validateBulletNums(dataPages[r][numDims].qText.replace(',', ''))];
       dataObject[r]['markers'] = [validateBulletNums(dataPages[r][numDims + 1].qText.replace(',', ''))];
-      dataObject[r]['ranges'] = [validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propUpperRangeThresh,
-        validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propMiddleRangeThresh,
-        validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propLowerRangeThresh];
+      dataObject[r]['ranges'] = [validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) ,
+        validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propMiddleRangeThresh/100,
+        validateBulletNums(dataPages[r][numDims + 2].qText.replace(',', '')) * propLowerRangeThresh/100];
     }
     //create the measure bar height as an additional data measure, this is driven from properties
     dataObject[r]['measureBarHeight'] = [propMeasureBarSize];
@@ -198,13 +197,12 @@ export default function paint($element, layout, g) {
   $('#' + id + ' line.marker').attr('stroke', markerColor);
 
   //convert hex to rgb as first step of gradient creation
-  var rangeRGB = hexToRgb(rangeColor),
-    lowerRangeThresh = section4.lowerThreshRangeColor,
-    middleRangeThresh = section4.middleThreshRangeColor;
-
+  var rangeRGB = hexToRgb(rangeColor);
+  const middleRangeThreshold = 0.7;
+  const lowerRangeThreshold = 0.85;
   //bind the colors to the ranges on the chart
-  $('#' + id + ' rect.range.s2').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * middleRangeThresh) + ', ' + Math.floor(rangeRGB.g * middleRangeThresh) + ', ' + Math.floor(rangeRGB.b * middleRangeThresh) + ')');
-  $('#' + id + ' rect.range.s1').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * lowerRangeThresh) + ', ' + Math.floor(rangeRGB.g * lowerRangeThresh) + ', ' + Math.floor(rangeRGB.b * lowerRangeThresh) + ')');
+  $('#' + id + ' rect.range.s2').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * middleRangeThreshold) + ', ' + Math.floor(rangeRGB.g * middleRangeThreshold) + ', ' + Math.floor(rangeRGB.b * middleRangeThreshold) + ')');
+  $('#' + id + ' rect.range.s1').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * lowerRangeThreshold) + ', ' + Math.floor(rangeRGB.g * lowerRangeThreshold) + ', ' + Math.floor(rangeRGB.b * lowerRangeThreshold) + ')');
   $('#' + id + ' rect.range.s0').attr('fill', 'rgb(' + rangeRGB.r + ', ' + rangeRGB.g + ', ' + rangeRGB.b + ')');
   d3.select(`#${id}`).append('div')
     .attr('class', 'tooltip')
