@@ -1,6 +1,9 @@
-
 import paint from './paint';
 import './stylesheet.css';
+
+if (!window._babelPolyfill) { //eslint-disable-line no-underscore-dangle
+  require('@babel/polyfill');
+}
 
 //----------individual accordion labels-------------
 //Dimension
@@ -69,55 +72,49 @@ var rangeColor = {
   component: 'color-picker',
   dualOutput: true
 };
-var middleThreshRangeColor = {
-  ref: 'props.section4.middleThreshRangeColor',
-  label: 'Change middle range gradient',
-  type: 'integer',
-  defaultValue: 0.7,
-  min: 0,
-  max: 1.55,
-  step: .05,
-  component: 'slider'
-};
-var lowerThreshRangeColor = {
-  ref: 'props.section4.lowerThreshRangeColor',
-  label: 'Change lower range gradient',
-  type: 'integer',
-  defaultValue: 0.85,
-  min: 0,
-  max: 1.55,
-  step: .05,
-  component: 'slider'
-};
 var lowerThreshRange = {
   ref: 'props.section4.lowerThreshRange',
-  label: 'Change lower range',
-  type: 'integer',
-  defaultValue: 0.5,
+  label: 'Set lower range (%)',
+  type: 'number',
+  defaultValue: 50,
   min: 0,
-  max: 1.05,
-  step: .05,
-  component: 'slider'
+  max: 100,
+  change: ({ props: { section4 } }) => {
+    if(section4.lowerThreshRange > section4.middleThreshRange){
+      if(section4.middleThreshRange === 0){
+        section4.middleThreshRange = 1;
+      }
+      section4.lowerThreshRange = section4.middleThreshRange - 1;
+    }
+    if(section4.lowerThreshRange < 0 ){
+      section4.lowerThreshRange = 0;
+    }
+    if(section4.lowerThreshRange > 100){
+      section4.lowerThreshRange = 100;
+    }
+  }
 };
 var middleThreshRange = {
   ref: 'props.section4.middleThreshRange',
-  label: 'Change middle range',
-  type: 'integer',
-  defaultValue: 0.75,
+  type: 'number' ,
+  label: 'Set middle range (%)',
+  defaultValue: 75,
   min: 0,
-  max: 1.05,
-  step: .05,
-  component: 'slider'
-};
-var upperThreshRange = {
-  ref: 'props.section4.upperThreshRange',
-  label: 'Change upper range',
-  type: 'integer',
-  defaultValue: 1,
-  min: 0,
-  max: 1.05,
-  step: .05,
-  component: 'slider'
+  max: 100,
+  change: ({ props: { section4 } }) => {
+    if(section4.middleThreshRange < section4.lowerThreshRange){
+      if(section4.lowerThreshRange === 100){
+        section4.lowerThreshRange = 99;
+      }
+      section4.middleThreshRange = section4.lowerThreshRange + 1;
+    }
+    if(section4.middleThreshRange < 0){
+      section4.middleThreshRange = 0;
+    }
+    if(section4.middleThreshRange > 100){
+      section4.middleThreshRange = 100;
+    }
+  }
 };
 //Axis configuration
 var uniformAxisBool = {
@@ -178,9 +175,6 @@ export default {
             label: 'Range',
             items: {
               rangeColor: rangeColor,
-              lowerThreshRangeColor: lowerThreshRangeColor,
-              middleThreshRangeColor: middleThreshRangeColor,
-              upperThreshRange: upperThreshRange,
               middleThreshRange: middleThreshRange,
               lowerThreshRange: lowerThreshRange
             }
@@ -225,7 +219,7 @@ export default {
   },
   paint: function ($element, layout) {
     try {
-      paint($element, layout);
+      paint($element, layout, this);
     }
     catch (e) {
       console.error(e); // eslint-disable-line no-console

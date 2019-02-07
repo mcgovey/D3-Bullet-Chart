@@ -31,7 +31,6 @@ function createDataArray(hypercubeData, layout) {
   //create variables from layout settings
   var propShowDimSubTitles = layout.props.section1.showDimSubTitles,
     propMeasureBarSize = layout.props.section2.barSize,
-    propUpperRangeThresh = Number(layout.props.section4.upperThreshRange),
     propMiddleRangeThresh = Number(layout.props.section4.middleThreshRange),
     propLowerRangeThresh = Number(layout.props.section4.lowerThreshRange),
     propUniformAxis = layout.props.section5.uniformAxisBool;
@@ -99,7 +98,7 @@ function createDataArray(hypercubeData, layout) {
   return dataObject;
 }
 
-export default function paint($element, layout) {
+export default function paint($element, layout, g) {
   //set hypercube variable and call function on hcData to return data in a json format
   var hc = layout.qHyperCube,
     hcData = createDataArray(hc, layout);
@@ -162,11 +161,19 @@ export default function paint($element, layout) {
   title.append('text')
     .attr('class', 'title')
     .text(function (d) { return d.title; });
-
-  title.append('text')
+  var subtitle = svg.append('g')
+    .style('text-anchor', 'start')
+    .attr('transform', `translate(-${margin.left},` +( (height / 2) + 5) +')');
+  subtitle.append('text')
     .attr('class', 'subtitle')
     .attr('dy', '1em')
+    .attr('clip-path', 'url(#clipText)')
     .text(function (d) { return d.subtitle; });
+  var clip = subtitle.append('clipPath')
+    .attr('id','clipText' );
+  clip.append('rect')
+    .attr('width', margin.left - 5 +'px')
+    .attr('height', '25px');
 
   // Colors (with fallbacks to previous properties)
   const { props: { section2, section3, section4 } } = layout;
@@ -181,12 +188,42 @@ export default function paint($element, layout) {
   $('#' + id + ' line.marker').attr('stroke', markerColor);
 
   //convert hex to rgb as first step of gradient creation
-  var rangeRGB = hexToRgb(rangeColor),
-    lowerRangeThresh = section4.lowerThreshRangeColor,
-    middleRangeThresh = section4.middleThreshRangeColor;
-
+  var rangeRGB = hexToRgb(rangeColor);
+  const middleRangeThreshold = 0.7;
+  const lowerRangeThreshold = 0.85;
   //bind the colors to the ranges on the chart
-  $('#' + id + ' rect.range.s2').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * middleRangeThresh) + ', ' + Math.floor(rangeRGB.g * middleRangeThresh) + ', ' + Math.floor(rangeRGB.b * middleRangeThresh) + ')');
-  $('#' + id + ' rect.range.s1').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * lowerRangeThresh) + ', ' + Math.floor(rangeRGB.g * lowerRangeThresh) + ', ' + Math.floor(rangeRGB.b * lowerRangeThresh) + ')');
+  $('#' + id + ' rect.range.s2').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * middleRangeThreshold) + ', ' + Math.floor(rangeRGB.g * middleRangeThreshold) + ', ' + Math.floor(rangeRGB.b * middleRangeThreshold) + ')');
+  $('#' + id + ' rect.range.s1').attr('fill', 'rgb(' + Math.floor(rangeRGB.r * lowerRangeThreshold) + ', ' + Math.floor(rangeRGB.g * lowerRangeThreshold) + ', ' + Math.floor(rangeRGB.b * lowerRangeThreshold) + ')');
   $('#' + id + ' rect.range.s0').attr('fill', 'rgb(' + rangeRGB.r + ', ' + rangeRGB.g + ', ' + rangeRGB.b + ')');
+  d3.select(`#${id}`).append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', '0')
+    .append('p')
+    .attr('class', 'ttvalue');
+  d3.selectAll('rect')
+    .on('mouseenter', function(d){
+      if(g._inEditState) return;
+      var event = d3.event;
+      var x = event.pageX;
+      var y = event.pageY;
+      var container = this.parentNode.parentNode.parentNode; // d3.select('#' + id) always gives back the first object's element container, so when a user hover on a 2nd or 3rd or.. bar, its tooltip won't be rendered but the first object tooltip will ,,, DUE to the id not being updated
+
+      d3.select(container)
+        .select('.ttvalue')
+        .text(d);
+      d3.select(container)
+        .select('.tooltip')
+        .style('left', x + 10 + 'px')
+        .style('top', y - 35 + 'px')
+        .transition()
+        .delay(750)
+        .style('opacity', '0.95')
+      ;
+    })
+    .on('mouseleave',function(){
+      d3.selectAll('.tooltip')
+        .style('opacity', '0')
+        .transition()
+      ;
+    });
 }
