@@ -45,7 +45,15 @@ var barNum = {
   type: 'integer',
   defaultValue: 4,
   min: 1,
-  max: 20
+  max: 20,
+  change : ({ props: { section2 } })=>{
+    if(section2.barNum > 20){
+      section2.barNum = 20;
+    }
+    if(section2.barNum < 0){
+      section2.barNum = 1;
+    }
+  }
 };
 var barColor = {
   ref: 'props.section2.barColor',
