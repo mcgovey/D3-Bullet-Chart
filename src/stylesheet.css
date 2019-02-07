@@ -1,6 +1,12 @@
 div.divbullet {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: relative;
+  overflow: auto;
+  overflow-x: hidden;
+  width: 100%;
+}
+div.divbullet.edit_mode{
+  overflow: hidden !important;
 }
 .bullet { font: 10px sans-serif; }
 .bullet .marker { stroke-width: 2px; }

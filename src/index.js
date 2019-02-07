@@ -39,6 +39,22 @@ var barSize = {
   max: 100,
   component: 'slider'
 };
+var barNum = {
+  ref: 'props.section2.barNum',
+  label: 'Quantity of bars showed(max. 20)',
+  type: 'integer',
+  defaultValue: 4,
+  min: 1,
+  max: 20,
+  change : ({ props: { section2 } })=>{
+    if(section2.barNum > 20){
+      section2.barNum = 20;
+    }
+    if(section2.barNum < 1){
+      section2.barNum = 1;
+    }
+  }
+};
 var barColor = {
   ref: 'props.section2.barColor',
   label: 'Change bar color',
@@ -160,6 +176,7 @@ export default {
             label: 'Measure Bar',
             items: {
               barSize: barSize,
+              barNum: barNum,
               barColor: barColor
             }
           },
@@ -218,8 +235,9 @@ export default {
     exportData: true
   },
   paint: function ($element, layout) {
+    let component = this;
     try {
-      paint($element, layout, this);
+      paint($element, layout, component);
     }
     catch (e) {
       console.error(e); // eslint-disable-line no-console
