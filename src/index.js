@@ -41,11 +41,11 @@ var barSize = {
 };
 var barNum = {
   ref: 'props.section2.barNum',
-  label: 'Quantity of bars showed(max. 50)',
+  label: 'Quantity of bars showed(max. 20)',
   type: 'integer',
   defaultValue: 4,
   min: 1,
-  max: 50
+  max: 20
 };
 var barColor = {
   ref: 'props.section2.barColor',
