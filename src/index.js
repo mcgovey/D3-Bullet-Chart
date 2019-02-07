@@ -50,7 +50,7 @@ var barNum = {
     if(section2.barNum > 20){
       section2.barNum = 20;
     }
-    if(section2.barNum < 0){
+    if(section2.barNum < 1){
       section2.barNum = 1;
     }
   }
