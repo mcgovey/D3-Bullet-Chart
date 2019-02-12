@@ -154,7 +154,9 @@ export default function paint($element, layout, component) {
 
   title.append('text')
     .attr('class', 'title')
-    .text(function (d) { return d.title; });
+    .text(function (d) {
+      if(d.title === undefined) return 'undefined';
+      return d.title; });
   var subtitle = svg.append('g')
     .style('text-anchor', 'start')
     .attr('transform', `translate(-${margin.left},` +( (height / 2) + 5) +')');

@@ -8,6 +8,7 @@ export default function bullet () {
     markers = bulletMarkers,
     measures = bulletMeasures,
     measureHeight = bulletMeasureHeight,
+    rangeMaxx = getRangeMax,
     width = 380,
     height = 30,
     tickFormat = null,
@@ -19,11 +20,14 @@ export default function bullet () {
         markerz = markers.call(this, d, i).slice().sort(d3.descending),
         measurez = measures.call(this, d, i).slice().sort(d3.descending),
         measureHeightz = measureHeight.call(this, d, i).slice().sort(d3.descending),
-        rangeMax = getRangeMax.call(this, d, i).slice().sort(d3.descending),
+        rangeMax = rangeMaxx.call(this, d, i).slice().sort(d3.descending),
         g = d3.select(this);
 
+      if (isNaN(rangez[0]) || isNaN(markerz[0]) || isNaN(rangez[0]) ){
+        return;
+      }
       //set the x-axis scale based on the menu setting for universal vs independent
-      if (rangeMax==0) {
+      if (rangeMax[0]==0) {
         // Compute the new x-scale.
         var x1 = d3.scale.linear()
           .domain([0, Math.max(rangez[0], markerz[0], measurez[0])])
