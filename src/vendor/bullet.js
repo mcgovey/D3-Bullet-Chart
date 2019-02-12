@@ -1,62 +1,42 @@
 import * as d3 from "d3";
-// Chart design based on the recommendations of Stephen Few. Implementation
-// based on the work of Clint Ivy, Jamie Love, and Jason Davies.
-// http://projects.instantcognition.com/protovis/bulletchart/
+
 export default function bullet () {
-  var orient = "left",
+  var orient = "left", // TODO top & bottom
     reverse = false,
-    vertical = false,
+    duration = 0,
     ranges = bulletRanges,
     markers = bulletMarkers,
     measures = bulletMeasures,
+    measureHeight = bulletMeasureHeight,
     width = 380,
     height = 30,
-    xAxis = d3.svg.axis();
-
+    tickFormat = null,
+    maxTickHeight;
   // For each small multiple…
   function bullet(g) {
     g.each(function(d, i) {
-      var rangez = ranges
-          .call(this, d, i)
-          .slice()
-          .sort(d3.descending),
-        markerz = markers
-          .call(this, d, i)
-          .slice()
-          .sort(d3.descending),
-        measurez = measures
-          .call(this, d, i)
-          .slice()
-          .sort(d3.descending),
-        g = d3.select(this),
-        extentX,
-        extentY;
+      var rangez = ranges.call(this, d, i).slice().sort(d3.descending),
+        markerz = markers.call(this, d, i).slice().sort(d3.descending),
+        measurez = measures.call(this, d, i).slice().sort(d3.descending),
+        measureHeightz = measureHeight.call(this, d, i).slice().sort(d3.descending),
+        rangeMax = getRangeMax.call(this, d, i).slice().sort(d3.descending),
+        g = d3.select(this);
 
-      var wrap = g.select("g.wrap");
-      if (wrap.empty()) wrap = g.append("g").attr("class", "wrap");
-
-      if (vertical) {
-        (extentX = height), (extentY = width);
-        wrap.attr("transform", "rotate(90)translate(0," + -width + ")");
+      //set the x-axis scale based on the menu setting for universal vs independent
+      if (rangeMax==0) {
+        // Compute the new x-scale.
+        var x1 = d3.scale.linear()
+          .domain([0, Math.max(rangez[0], markerz[0], measurez[0])])
+          .range(reverse ? [width, 0] : [0, width]);
       } else {
-        (extentX = width), (extentY = height);
-        wrap.attr("transform", null);
+        // Compute the new x-scale.
+        var x1 = d3.scale.linear()
+          .domain([0, rangeMax])
+          .range(reverse ? [width, 0] : [0, width]);
       }
-
-      // Compute the new x-scale.
-      var x1 = d3.scale
-        .linear()
-        .domain([0, Math.max(rangez[0], markerz[0], measurez[0])])
-        .range(reverse ? [extentX, 0] : [0, extentX]);
-
-
-      // Retrieve the old x-scale, if this is an update.
-      var x0 =
-        this.__chart__ ||
-        d3.scale
-          .linear()
-          .domain([0, Infinity])
-          .range(x1.range());
+      var x0 = this.__chart__ || d3.scale.linear()
+        .domain([0, Infinity])
+        .range(x1.range());
 
       // Stash the new scale.
       this.__chart__ = x1;
@@ -66,118 +46,191 @@ export default function bullet () {
         w1 = bulletWidth(x1);
 
       // Update the range rects.
-      var range = wrap.selectAll("rect.range").data(rangez);
+      var range = g.selectAll("rect.range")
+        .data(rangez);
 
-      range
-        .enter()
-        .append("rect")
-        .attr("class", function(d, i) {
-          return "range s" + i;
-        })
+      range.enter().append("rect")
+        .attr("class", function(d, i) { return "range s" + i; })
         .attr("width", w0)
-        .attr("height", extentY)
-        .attr("x", reverse ? x0 : 0);
+        .attr("height", height)
+        .attr("x", reverse ? x0 : 0)
+        .transition()
+        .duration(duration)
+        .attr("width", w1)
+        .attr("x", reverse ? x1 : 0);
 
-      d3.transition(range)
+      range.transition()
+        .duration(duration)
         .attr("x", reverse ? x1 : 0)
         .attr("width", w1)
-        .attr("height", extentY);
+        .attr("height", height);
 
       // Update the measure rects.
-      var measure = wrap.selectAll("rect.measure").data(measurez);
+      var measure = g.selectAll("rect.measure")
+        .data(measurez);
 
-      measure
-        .enter()
-        .append("rect")
-        .attr("class", function(d, i) {
-          return "measure s" + i;
-        })
+      measure.enter().append("rect")
+        .attr("class", function(d, i) { return "measure s" + i; })
         .attr("width", w0)
-        .attr("height", extentY / 3)
+        .attr("height", height * measureHeightz[0] * .01)
         .attr("x", reverse ? x0 : 0)
-        .attr("y", extentY / 3);
-
-      d3.transition(measure)
+        .attr("y", height * (100-measureHeightz[0]) * .005)
+        .transition()
+        .duration(duration)
         .attr("width", w1)
-        .attr("height", extentY / 3)
+        .attr("x", reverse ? x1 : 0);
+
+      measure.transition()
+        .duration(duration)
+        .attr("width", w1)
+        .attr("height", height * measureHeightz[0] * .01)
         .attr("x", reverse ? x1 : 0)
-        .attr("y", extentY / 3);
+        .attr("y", height * (100-measureHeightz[0]) * .005);//use user defined measure height divided by two for y positioning
 
       // Update the marker lines.
-      var marker = wrap.selectAll("line.marker").data(markerz);
+      var marker = g.selectAll("line.marker")
+        .data(markerz);
 
-      marker
-        .enter()
-        .append("line")
+      marker.enter().append("line")
         .attr("class", "marker")
         .attr("x1", x0)
         .attr("x2", x0)
-        .attr("y1", extentY / 6)
-        .attr("y2", (extentY * 5) / 6);
+        .attr("y1", height / 6)
+        .attr("y2", height * 5 / 6)
+        .transition()
+        .duration(duration)
+        .attr("x1", x1)
+        .attr("x2", x1);
 
-      d3.transition(marker)
+      marker.transition()
+        .duration(duration)
         .attr("x1", x1)
         .attr("x2", x1)
-        .attr("y1", extentY / 6)
-        .attr("y2", (extentY * 5) / 6);
+        .attr("y1", height / 6)
+        .attr("y2", height * 5 / 6);
+      // Compute the tick format.
+      var format = tickFormat || x1.tickFormat(8);
 
-      var axis = g.selectAll("g.axis").data([0]);
-      axis
-        .enter()
-        .append("g")
-        .attr("class", "axis");
-      axis
-        .attr("transform", vertical ? null : "translate(0," + extentY + ")")
-        .call(xAxis.scale(x1));
+      // Ensure max tick height is less than 11
+      if ((height*1.05)>11) {
+        maxTickHeight = 11;
+      }
+      else {
+        maxTickHeight = height*1.05;
+      }
+
+      // Update the tick groups.
+      var tick = g.selectAll("g.tick")
+        .data(x1.ticks(8), function(d) {
+          return this.textContent || format(d);
+        });
+
+      // Initialize the ticks with the old scale, x0.
+      var tickEnter = tick.enter().append("g")
+        .attr("class", "tick")
+        .attr("transform", bulletTranslate(x0))
+        .style("opacity", 1e-6);
+
+      tickEnter.append("line")
+        .attr("y1", height)
+        .attr("y2", height+maxTickHeight);
+      tickEnter.append("text")
+        .attr("text-anchor", "middle")
+        .attr("dy", "1em")
+        .attr("y", height+maxTickHeight)
+        .text(format);
+
+      // Transition the entering ticks to the new scale, x1.
+      tickEnter.transition()
+        .duration(duration)
+        .attr("transform", bulletTranslate(x1))
+        .style("opacity", 1);
+
+      // Transition the updating ticks to the new scale, x1.
+      var tickUpdate = tick.transition()
+        .duration(duration)
+        .attr("transform", bulletTranslate(x1))
+        .style("opacity", 1);
+
+      tickUpdate.select("line")
+        .attr("y1", height)
+        .attr("y2", height+maxTickHeight);
+
+      tickUpdate.select("text")
+        .attr("y", height+maxTickHeight);
+
+      // Transition the exiting ticks to the new scale, x1.
+      tick.exit().transition()
+        .duration(duration)
+        .attr("transform", bulletTranslate(x1))
+        .style("opacity", 1e-6)
+        .remove();
     });
     d3.timer.flush();
   }
 
   // left, right, top, bottom
-  bullet.orient = function(_) {
+  bullet.orient = function(x) {
     if (!arguments.length) return orient;
-    orient = _ + "";
+    orient = x;
     reverse = orient == "right" || orient == "bottom";
-    xAxis.orient(
-      (vertical = orient == "top" || orient == "bottom") ? "left" : "bottom"
-    );
     return bullet;
   };
 
   // ranges (bad, satisfactory, good)
-  bullet.ranges = function(_) {
+  bullet.ranges = function(x) {
     if (!arguments.length) return ranges;
-    ranges = _;
+    ranges = x;
     return bullet;
   };
 
   // markers (previous, goal)
-  bullet.markers = function(_) {
+  bullet.markers = function(x) {
     if (!arguments.length) return markers;
-    markers = _;
+    markers = x;
     return bullet;
   };
 
   // measures (actual, forecast)
-  bullet.measures = function(_) {
+  bullet.measures = function(x) {
     if (!arguments.length) return measures;
-    measures = _;
+    measures = x;
     return bullet;
   };
 
-  bullet.width = function(_) {
+  bullet.width = function(x) {
     if (!arguments.length) return width;
-    width = +_;
+    width = x;
     return bullet;
   };
 
-  bullet.height = function(_) {
+  bullet.height = function(x) {
     if (!arguments.length) return height;
-    height = +_;
+    height = x;
     return bullet;
   };
 
-  return d3.rebind(bullet, xAxis, "tickFormat");
+  bullet.tickFormat = function(x) {
+    if (!arguments.length) return tickFormat;
+    tickFormat = x;
+    return bullet;
+  };
+
+  bullet.duration = function(x) {
+    if (!arguments.length) return duration;
+    duration = x;
+    return bullet;
+  };
+
+  return bullet;
+}
+
+function bulletMeasureHeight(d){
+  return d.measureBarHeight;
+}
+
+function getRangeMax (d){
+  return d.rangeMax;
 }
 
 function bulletRanges(d) {
@@ -190,6 +243,12 @@ function bulletMarkers(d) {
 
 function bulletMeasures(d) {
   return d.measures;
+}
+
+function bulletTranslate(x) {
+  return function(d) {
+    return "translate(" + x(d) + ",0)";
+  };
 }
 
 function bulletWidth(x) {
