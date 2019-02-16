@@ -25,7 +25,7 @@ jobs:
             --blackduck.trust.cert=true \
             --blackduck.username="svc-blackduck" \
             --blackduck.password=${svc_blackduck} \
-            --detect.project.name="viz-bundle-qlik-barplus-chart"
+            --detect.project.name="viz-bundle-qlik-bullet-chart"
       - run:
           name: Run tests
           command: npm run test-once
