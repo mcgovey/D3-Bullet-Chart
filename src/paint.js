@@ -160,8 +160,7 @@ export default function paint($element, layout) {
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom - 2)
     .append('g')
-    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-    .call(chart);
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
   //create labels for each bullet
   var title = svg.append('g')
@@ -198,7 +197,7 @@ export default function paint($element, layout) {
     .attr('id', 'subRect')
     .attr('width', margin.left - 5 +'px')
     .attr('height', '25px');
-
+  svg.call(chart);
   // Colors (with fallbacks to previous properties)
   const { props: { section2, section3, section4 } } = layout;
   const barColor = section2.barColor.color || section2.barColor;
