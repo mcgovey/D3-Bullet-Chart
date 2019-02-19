@@ -130,7 +130,7 @@ export default function paint($element, layout, component) {
     $('#' + id).empty();
   } else {
     // if it hasn't been created, create it with the appropiate id and size
-    $element.append($('<div />').attr('id', id).attr('class', 'divbullet' ).height($element.height()));
+    $element.append($('<div />').attr('id', id).attr('class', 'divbullet' ).height('100%'));
   }
   d3.select(`#${id}`).classed({ 'edit_mode' : component._inEditState });
   var chart = bullet()
