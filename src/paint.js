@@ -144,31 +144,44 @@ export default function paint($element, layout, component) {
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom - 2)
     .append('g')
-    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-    .call(chart);
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
   //create labels for each bullet
   var title = svg.append('g')
-    .style('text-anchor', 'end')
-    .attr('transform', 'translate(-6,' + height / 2 + ')');
-
+    .style('text-anchor', 'start')
+    .attr('transform', `translate(-${margin.left}, ${height / 2})`);
   title.append('text')
     .attr('class', 'title')
+    .attr('clip-path', 'url(#titleClip)')
     .text(function (d) { return d.title; });
+
+  var titleClip = title.append('clipPath')
+    .attr('id','titleClip' )
+    .attr('transform', 'translate(0,-20)');
+
+  titleClip.append('rect')
+    .attr('id', 'titleRect')
+    .attr('width', margin.left - 5 +'px')
+    .attr('height', '25px');
+
   var subtitle = svg.append('g')
     .style('text-anchor', 'start')
     .attr('transform', `translate(-${margin.left},` +( (height / 2) + 5) +')');
+
   subtitle.append('text')
     .attr('class', 'subtitle')
     .attr('dy', '1em')
     .attr('clip-path', 'url(#clipText)')
     .text(function (d) { return d.subtitle; });
+
   var clip = subtitle.append('clipPath')
     .attr('id','clipText' );
+
   clip.append('rect')
+    .attr('id', 'subRect')
     .attr('width', margin.left - 5 +'px')
     .attr('height', '25px');
-
+  svg.call(chart);
   // Colors (with fallbacks to previous properties)
   const { props: { section2, section3, section4 } } = layout;
   const barColor = section2.barColor.color || section2.barColor;
