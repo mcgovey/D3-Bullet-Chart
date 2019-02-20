@@ -153,7 +153,9 @@ export default function paint($element, layout, component) {
   title.append('text')
     .attr('class', 'title')
     .attr('clip-path', 'url(#titleClip)')
-    .text(function (d) { return d.title; });
+    .text(function (d) {
+      if(d.title === undefined) return 'undefined';
+      return d.title; });
 
   var titleClip = title.append('clipPath')
     .attr('id','titleClip' )
