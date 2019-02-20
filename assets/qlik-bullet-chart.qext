@@ -1,13 +1,10 @@
 {
 	"name": "Bullet chart",
-	"description": "Bullet chart using D3.js library",
+	"description": "A bullet chart that shows three measures across one or no dimensions.",
 	"type": "visualization",
 	"version": "X.Y.Z",
 	"icon": "bar-chart-horizontal",
 	"preview": "qlik-bullet-chart.png",
-	"author": "Kevin McGovern <kmcg82004@gmail.com>",
-	"homepage": "",
-	"keywords": "qlik-sense, visualization",
 	"license": "MIT",
 	"repository": "https://github.com/qlik-oss/D3-Bullet-Chart",
 	"dependencies": {
