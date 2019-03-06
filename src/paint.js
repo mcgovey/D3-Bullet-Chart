@@ -90,9 +90,77 @@ function createDataArray(hypercubeData, layout) {
     }
   }
 
-  //Loop through array again to bind the maximum range to the array
+  //Find the common number format (if any)
+  var tickFormatType = null;
+  var tickFormatStr = null;
+  for (var i = 0; i < numMeasures; i++) {
+    if (tickFormatType == null) {
+      tickFormatType = hypercubeData.qMeasureInfo[i].qNumFormat.qType;
+      tickFormatStr = hypercubeData.qMeasureInfo[i].qNumFormat.qFmt;
+    } else if (hypercubeData.qMeasureInfo[i].qNumFormat.qType
+      && tickFormatType !== hypercubeData.qMeasureInfo[i].qNumFormat.qType) {
+
+      // Got a new format that is different from previous
+      tickFormatType = null;
+      tickFormatStr = null;
+      break;
+    }
+  }
+
+  var decCount = 0;
+  var extChar = '';
+  var timeFormat = '';
+  switch (tickFormatType) {
+    case 'F':
+      if (tickFormatStr.indexOf('%') != -1) {
+        extChar = '%';
+      }
+    case 'M':
+    case 'R':
+      var decimalMatch = /\.[\d|#]+/.exec(tickFormatStr);
+      if (decimalMatch) {
+        decCount = decimalMatch[0].length - 1;
+      }
+      break;
+    case 'D':
+      timeFormat = tickFormatStr;
+      timeFormat = timeFormat.replace(/YYYY/g, '%Y');
+      timeFormat = timeFormat.replace(/MMMM/g, '%B');
+      timeFormat = timeFormat.replace(/MMM/g, '%b');
+      timeFormat = timeFormat.replace(/M{1,2}/g, '%m');
+      timeFormat = timeFormat.replace(/D{1,2}/gi, '%d');
+      timeFormat = timeFormat.replace(/hh/g, '%H');
+      timeFormat = timeFormat.replace(/h/g, '%I');
+
+      // Replace 'm' but not '%m'. Look-behind not supported by all browsers so do it manually
+      var match;
+      var minRegex = /m{1,2}/g;
+      do {
+        match = minRegex.exec(timeFormat);
+        if (match && (match.index == 0 || timeFormat[match.index - 1] !== '%')) {
+          timeFormat = timeFormat.substr(0, match.index) + '%M'
+            + timeFormat.substr(match.index + match[0].length);
+        }
+      } while (match);
+
+      timeFormat = timeFormat.replace(/s{1,2}/g, '%S');
+      timeFormat = timeFormat.replace(/\[\.fff\]/gi, ''); // No good replacement for brackets
+      timeFormat = timeFormat.replace(/TT/g, '%p');
+      break;
+    case 'IV':
+      timeFormat = tickFormatStr;
+      break;
+  }
+
+  //Loop through array again to bind some values
   for (var row = 0; row < dataPages.length; row++) {
     dataObject[row]['rangeMax'] = [rangeMax];
+    dataObject[row]['tickFormat'] = [{
+      'type': tickFormatType,
+      'decCount': decCount,
+      'extChar': extChar,
+      'timeFormat': timeFormat
+    }];
   }
 
   return dataObject;
