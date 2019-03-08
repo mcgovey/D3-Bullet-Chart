@@ -23,22 +23,13 @@ export default function bullet () {
         rangeMax = maxRange.call(this, d, i).slice().sort(d3.descending),
         g = d3.select(this);
 
-      if (isNaN(rangez[0]) || isNaN(markerz[0]) || isNaN(measurez[0]) ){
-        return;
-      }
-      const rangeMaxValue = rangeMax[0];
       //set the x-axis scale based on the menu setting for universal vs independent
-      if (rangeMaxValue==0) {
-        // Compute the new x-scale.
-        var x1 = d3.scale.linear()
-          .domain([0, Math.max(rangez[0], markerz[0], measurez[0])])
-          .range(reverse ? [width, 0] : [0, width]);
-      } else {
-        // Compute the new x-scale.
-        var x1 = d3.scale.linear()
-          .domain([0, rangeMax])
-          .range(reverse ? [width, 0] : [0, width]);
-      }
+      var usedRangeMax = rangeMax[0] == 0 ? [1] : rangeMax;
+      // Compute the new x-scale.
+      var x1 = d3.scale.linear()
+        .domain([0, usedRangeMax])
+        .range(reverse ? [width, 0] : [0, width]);
+
       var x0 = this.__chart__ || d3.scale.linear()
         .domain([0, Infinity])
         .range(x1.range());
@@ -54,19 +45,23 @@ export default function bullet () {
       var range = g.selectAll("rect.range")
         .data(rangez);
 
+      // The min x-position of the rects. Using a negative value to move the rect slightly to the
+      // left to make it "fill" the area of the "tick".
+      var minRectX = -1;
+
       range.enter().append("rect")
         .attr("class", function(d, i) { return "range s" + i; })
         .attr("width", w0)
         .attr("height", height)
-        .attr("x", reverse ? x0 : 0)
+        .attr("x", reverse ? x0 : minRectX)
         .transition()
         .duration(duration)
         .attr("width", w1)
-        .attr("x", reverse ? x1 : 0);
+        .attr("x", reverse ? x1 : minRectX);
 
       range.transition()
         .duration(duration)
-        .attr("x", reverse ? x1 : 0)
+        .attr("x", reverse ? x1 : minRectX)
         .attr("width", w1)
         .attr("height", height);
 
@@ -78,18 +73,18 @@ export default function bullet () {
         .attr("class", function(d, i) { return "measure s" + i; })
         .attr("width", w0)
         .attr("height", height * measureHeightz[0] * .01)
-        .attr("x", reverse ? x0 : 0)
+        .attr("x", reverse ? x0 : minRectX)
         .attr("y", height * (100-measureHeightz[0]) * .005)
         .transition()
         .duration(duration)
         .attr("width", w1)
-        .attr("x", reverse ? x1 : 0);
+        .attr("x", reverse ? x1 : minRectX);
 
       measure.transition()
         .duration(duration)
         .attr("width", w1)
         .attr("height", height * measureHeightz[0] * .01)
-        .attr("x", reverse ? x1 : 0)
+        .attr("x", reverse ? x1 : minRectX)
         .attr("y", height * (100-measureHeightz[0]) * .005);//use user defined measure height divided by two for y positioning
 
       // Update the marker lines.
@@ -259,6 +254,7 @@ function bulletTranslate(x) {
 function bulletWidth(x) {
   var x0 = x(0);
   return function(d) {
-    return Math.abs(x(d) - x0);
+    // 2 is minWidth and also to make the rect "fill" the first and last "ticks"
+    return Math.abs(x(d) - x0) + 2;
   };
 }
