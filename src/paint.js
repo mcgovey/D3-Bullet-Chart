@@ -60,23 +60,23 @@ function createDataArray(hypercubeData, layout) {
     }
 
     //check number of dimensions and build object based on the expressions available
+    //use numDims to account for when chart does not have dimensions
+    var value = dataPages[row][numDims].qNum;
+    dataObject[row]['measures'] = [isNaN(value) ? 0 : value];
     if (numMeasures == 1) {
-      //use numDims to account for when chart does not have dimensions
-      dataObject[row]['measures'] = [dataPages[row][numDims].qNum];
       dataObject[row]['markers'] = [0];
       dataObject[row]['ranges'] = [0, 0, 0];
-    }
-    if (numMeasures == 2) {
-      dataObject[row]['measures'] = [dataPages[row][numDims].qNum];
-      dataObject[row]['markers'] = [dataPages[row][numDims + 1].qNum];
+    } else if (numMeasures == 2) {
+      value = dataPages[row][numDims + 1].qNum;
+      dataObject[row]['markers'] = [isNaN(value) ? 0 : value];
       dataObject[row]['ranges'] = [0, 0, 0];
-    }
-    if (numMeasures == 3) {
-      dataObject[row]['measures'] = [dataPages[row][numDims].qNum];
-      dataObject[row]['markers'] = [dataPages[row][numDims + 1].qNum];
-      dataObject[row]['ranges'] = [dataPages[row][numDims + 2].qNum ,
-        dataPages[row][numDims + 2].qNum * propMiddleRangeThresh/100,
-        dataPages[row][numDims + 2].qNum * propLowerRangeThresh/100];
+    } else if (numMeasures == 3) {
+      value = dataPages[row][numDims + 1].qNum;
+      dataObject[row]['markers'] = [isNaN(value) ? 0 : value];
+      value = dataPages[row][numDims + 2].qNum;
+      value = isNaN(value) ? 0 : value;
+      dataObject[row]['ranges'] =
+        [value, value * propMiddleRangeThresh / 100, value * propLowerRangeThresh / 100];
     }
     //create the measure bar height as an additional data measure, this is driven from properties
     dataObject[row]['measureBarHeight'] = [propMeasureBarSize];
@@ -84,9 +84,11 @@ function createDataArray(hypercubeData, layout) {
     //set range max to zero if the configuration is set to not create a single axis for all dimensions
     if (propUniformAxis == true) {
       //Find the biggest number in the current array and compare it to
-      if (Math.max(dataObject[row]['measures'], dataObject[row]['markers'], dataObject[row]['ranges'][0]) > rangeMax) {
-        rangeMax = Math.max(dataObject[row]['measures'], dataObject[row]['markers'], dataObject[row]['ranges'][0]);
-      }
+      rangeMax = Math.max(
+        rangeMax,
+        dataObject[row]['measures'],
+        dataObject[row]['markers'],
+        dataObject[row]['ranges'][0]);
     }
   }
 
