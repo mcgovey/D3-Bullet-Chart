@@ -11,7 +11,6 @@ export default function bullet () {
     maxRange = getRangeMax,
     width = 380,
     height = 30,
-    tickFormat = null,
     maxTickHeight;
   // For each small multiple…
   function bullet(g) {
@@ -114,7 +113,7 @@ export default function bullet () {
         .attr("y1", height / 6)
         .attr("y2", height * 5 / 6);
       // Compute the tick format.
-      var format = tickFormat || x1.tickFormat(8);
+      var format = getTickFormat(d);
 
       // Ensure max tick height is less than 11
       if ((height*1.05)>11) {
@@ -215,12 +214,6 @@ export default function bullet () {
     return bullet;
   };
 
-  bullet.tickFormat = function(x) {
-    if (!arguments.length) return tickFormat;
-    tickFormat = x;
-    return bullet;
-  };
-
   bullet.duration = function(x) {
     if (!arguments.length) return duration;
     duration = x;
@@ -248,6 +241,69 @@ function bulletMarkers(d) {
 
 function bulletMeasures(d) {
   return d.measures;
+}
+
+function getTickFormat(d) {
+  if (d.tickFormat) {
+    var tickFormat = d.tickFormat[0];
+    switch (tickFormat['type']) {
+      case 'F':
+        if (tickFormat['extChar'] === '%') {
+          return function(d) { return d3.format(`,.${tickFormat['decCount']}%`)(d); };
+        }
+        return function(d) { return d3.format(`,.${tickFormat['decCount']}f`)(d); };
+      case 'M':
+        return function(d) { return "$" + d3.format(`,.${tickFormat['decCount']}f`)(d); };
+      case 'R':
+        return function(d) { return d3.format(`,.${tickFormat['decCount']}f`)(d); };
+      case 'D':
+        return function(d) {
+          // 0 is 1899-12-30 (Copying Qlik-Client behavior)
+          var date = new Date(1899, 11, 30 + Math.floor(d), 0, 0, 24 * 60 * 60 * (d - Math.floor(d)));
+          return d3.time.format(tickFormat['timeFormat'])(date);
+        };
+      case 'IV':
+        return function(d) {
+          // Integers represents days
+          var millis = d * 86400000;
+          var result = tickFormat['timeFormat'];
+          var match = null;
+          if (match = /D{1,2}|d{1,2}/.exec(result)) {
+            var days = Math.floor(millis / 86400000);
+            var daysString = match[0].length > 1 && days < 10 ? '0' + days : '' + days;
+            result = result.replace(/D{1,2}|d{1,2}/gi, daysString);
+            millis -= days * 86400000;
+          }
+          if (match = /h{1,2}/.exec(result)) {
+            var hours = Math.floor(millis / 3600000);
+            var hoursString = match[0].length > 1 && hours < 10 ? '0' + hours : '' + hours;
+            result = result.replace(/h{1,2}/gi, hoursString);
+            millis -= hours * 3600000;
+          }
+          if (match = /m{1,2}/.exec(result)) {
+            var minutes = Math.floor(millis / 60000);
+            var minutesString = match[0].length > 1 && minutes < 10 ? '0' + minutes : '' + minutes;
+            result = result.replace(/m{1,2}/gi, minutesString);
+            millis -= minutes * 60000;
+          }
+          if (match = /s{1,2}/.exec(result)) {
+            var seconds = Math.floor(millis / 1000);
+            var secondsString = match[0].length > 1 && seconds < 10 ? '0' + seconds : '' + seconds;
+            result = result.replace(/s{1,2}/gi, secondsString);
+            millis -= seconds * 1000;
+          }
+          if (match = /f{1,3}/.exec(result)) {
+            var millisString = match[0].length > 2 && millis < 100 ? '0' : '';
+            millisString += match[0].length > 1 && millis < 10 ? '0' : '';
+            millisString += millis;
+            result = result.replace(/f{1,3}/gi, millisString);
+          }
+          return result;
+        };
+    }
+  }
+
+  return function(d) { return d3.format(",.g")(d); };
 }
 
 function bulletTranslate(x) {
