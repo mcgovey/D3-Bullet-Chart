@@ -311,6 +311,6 @@ function bulletWidth(x) {
   var x0 = x(0);
   return function(d) {
     // 2 is minWidth and also to make the rect "fill" the first and last "ticks"
-    return Math.abs(x(d) - x0) + 2;
+    return Math.max(x(d) - x0, 0) + 2;
   };
 }
