@@ -23,7 +23,8 @@ export default function bullet () {
         g = d3.select(this);
 
       //set the x-axis scale based on the menu setting for universal vs independent
-      var usedRangeMax = rangeMax[0] == 0 ? [1] : rangeMax;
+      var usedRangeMax = rangeMax[0] == 0 ? Math.max(rangez[0], markerz[0], measurez[0]) : rangeMax;
+
       // Compute the new x-scale.
       var x1 = d3.scale.linear()
         .domain([0, usedRangeMax])
