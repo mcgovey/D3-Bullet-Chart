@@ -205,8 +205,27 @@ export default {
           }
         }
       },
-    }
-  },
+      about: {
+        component: 'items',
+        label: 'About',
+        items: {
+          header: {
+            label: 'Bullet chart',
+            style: 'header',
+            component: 'text'
+          },
+          paragraph1: {
+            label: `Bullet chart is Qlik Sense chart which allows the user to visualize up to three measures across one or no dimensions.`,
+            component: 'text'
+          },
+          paragraph2: {
+            label: 'Bullet chart is based upon an extension created by Kevin McGovern.',
+            component: 'text'
+          }
+        }
+      }
+    },
+  },  
   initialProperties: {
     qHyperCubeDef: {
       qDimensions: [],
