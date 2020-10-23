@@ -5,12 +5,12 @@ import bullet from './vendor/bullet';
 //Function to convert hex value to rgb array
 function hexToRgb(hex) {
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
   hex = hex.replace(shorthandRegex, function (m, r, g, b) {
     return r + r + g + g + b + b;
   });
 
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
     r: parseInt(result[1], 16),
     g: parseInt(result[2], 16),
@@ -20,7 +20,6 @@ function hexToRgb(hex) {
 
 //Function to take hypercube data and turn it into d3 readable array
 function createDataArray(hypercubeData, layout) {
-
   //get dimension label if it exists, if not create an empty string
   if (layout.props.section1.dimLabel) {
     var dimLabel = layout.props.section1.dimLabel;
@@ -29,7 +28,7 @@ function createDataArray(hypercubeData, layout) {
     var dimLabel = '';
   }
   //create variables from layout settings
-  var propShowDimSubTitles = layout.props.section1.showDimSubTitles,
+  let propShowDimSubTitles = layout.props.section1.showDimSubTitles,
     propMeasureBarSize = layout.props.section2.barSize,
     propMiddleRangeThresh = Number(layout.props.section4.middleThreshRange),
     propLowerRangeThresh = Number(layout.props.section4.lowerThreshRange),
@@ -37,11 +36,11 @@ function createDataArray(hypercubeData, layout) {
 
 
   //final array creation, create variables for testing and data manipulation as well
-  var dataObject = [],
+  let dataObject = [],
     numMeasures = hypercubeData.qMeasureInfo.length,
     numDims = hypercubeData.qDimensionInfo.length,
     dataPages = hypercubeData.qDataPages[0].qMatrix;
-  var rangeMax = 0;
+  let rangeMax = 0;
 
   //loop through all rows in data cube
   for (var row = 0; row < dataPages.length; row++) {
@@ -61,7 +60,7 @@ function createDataArray(hypercubeData, layout) {
 
     //check number of dimensions and build object based on the expressions available
     //use numDims to account for when chart does not have dimensions
-    var value = dataPages[row][numDims].qNum;
+    let value = dataPages[row][numDims].qNum;
     dataObject[row]['measures'] = [isNaN(value) ? 0 : value];
     if (numMeasures == 1) {
       dataObject[row]['markers'] = [0];
@@ -75,8 +74,8 @@ function createDataArray(hypercubeData, layout) {
       dataObject[row]['markers'] = [isNaN(value) ? 0 : value];
       value = dataPages[row][numDims + 2].qNum;
       value = isNaN(value) ? 0 : value;
-      dataObject[row]['ranges'] =
-        [value, value * propMiddleRangeThresh / 100, value * propLowerRangeThresh / 100];
+      dataObject[row]['ranges']
+        = [value, value * propMiddleRangeThresh / 100, value * propLowerRangeThresh / 100];
     }
     //create the measure bar height as an additional data measure, this is driven from properties
     dataObject[row]['measureBarHeight'] = [propMeasureBarSize];
@@ -93,15 +92,14 @@ function createDataArray(hypercubeData, layout) {
   }
 
   //Find the common number format (if any)
-  var tickFormatType = null;
-  var tickFormatStr = null;
-  for (var i = 0; i < numMeasures; i++) {
+  let tickFormatType = null;
+  let tickFormatStr = null;
+  for (let i = 0; i < numMeasures; i++) {
     if (tickFormatType == null) {
       tickFormatType = hypercubeData.qMeasureInfo[i].qNumFormat.qType;
       tickFormatStr = hypercubeData.qMeasureInfo[i].qNumFormat.qFmt;
     } else if (hypercubeData.qMeasureInfo[i].qNumFormat.qType
       && tickFormatType !== hypercubeData.qMeasureInfo[i].qNumFormat.qType) {
-
       // Got a new format that is different from previous
       tickFormatType = null;
       tickFormatStr = null;
@@ -109,9 +107,9 @@ function createDataArray(hypercubeData, layout) {
     }
   }
 
-  var decCount = 0;
-  var extChar = '';
-  var timeFormat = '';
+  let decCount = 0;
+  let extChar = '';
+  let timeFormat = '';
   switch (tickFormatType) {
     case 'F':
       if (tickFormatStr.indexOf('%') != -1) {
@@ -169,45 +167,44 @@ function createDataArray(hypercubeData, layout) {
 }
 
 export default function paint($element, layout, component) {
-
   //set hypercube variable and call function on hcData to return data in a json format
-  var hc = layout.qHyperCube,
+  let hc = layout.qHyperCube,
     hcData = createDataArray(hc, layout);
 
   //create variables for number of bars allowed and the size of the dimension area for text
-  var dimWidth = Number(layout.props.section1.dimWidth),
+  let dimWidth = Number(layout.props.section1.dimWidth),
     barsNum = layout.props.section2.barNum;
 
 
   // Create margin - should be replaced by dynamic numbers when this is eventually a responsive viz
-  var margin = { top: 5, right: 20, bottom: 25, left: dimWidth };
+  let margin = { top: 5, right: 20, bottom: 25, left: dimWidth };
 
   // Set chart object width
-  var width = $element.width() - margin.left - margin.right;
+  let width = $element.width() - margin.left - margin.right;
 
   // Set chart object height
   if(barsNum > hcData.length){
     barsNum = hcData.length;
   }
-  var height =Math.abs($element.height() / barsNum - margin.top - margin.bottom - 1);
+  let height =Math.abs($element.height() / barsNum - margin.top - margin.bottom - 1);
 
   // Chart object id
-  var id = 'container_' + layout.qInfo.qId;
-
+  let id = 'container_' + layout.qInfo.qId;
+  let idElement = document.getElementById(id);
   // Check to see if the chart element has already been created
-  if (document.getElementById(id)) {
-    // if it has been created, empty it's contents so we can redraw it
-    $('#' + id).empty();
-  } else {
+  if (idElement && idElement !== $element) {
     // if it hasn't been created, create it with the appropiate id and size
     $element.append($('<div />').attr('id', id).attr('class', 'divbullet' ).height('100%'));
+  } else {
+    // if it has been created, empty it's contents so we can redraw it
+    $('#' + id).empty();
   }
   d3.select(`#${id}`).classed({ 'edit_mode' : component._inEditState });
-  var chart = bullet()
+  let chart = bullet()
     .width(width)
     .height(height);
 
-  var svg = d3.select('#' + id).selectAll('svg')
+  let svg = d3.select('#' + id).selectAll('svg')
     .data(hcData)
     .enter().append('svg')
     .attr('class', 'bullet')
@@ -217,7 +214,7 @@ export default function paint($element, layout, component) {
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
   //create labels for each bullet
-  var title = svg.append('g')
+  let title = svg.append('g')
     .style('text-anchor', 'start')
     .attr('transform', `translate(-${margin.left}, ${height / 2})`);
   title.append('text')
@@ -227,7 +224,7 @@ export default function paint($element, layout, component) {
       if(d.title === undefined) return 'undefined';
       return d.title; });
 
-  var titleClip = title.append('clipPath')
+  let titleClip = title.append('clipPath')
     .attr('id','titleClip' )
     .attr('transform', 'translate(0,-20)');
 
@@ -236,7 +233,7 @@ export default function paint($element, layout, component) {
     .attr('width', margin.left - 5 +'px')
     .attr('height', '25px');
 
-  var subtitle = svg.append('g')
+  let subtitle = svg.append('g')
     .style('text-anchor', 'start')
     .attr('transform', `translate(-${margin.left},` +( (height / 2) + 5) +')');
 
@@ -246,7 +243,7 @@ export default function paint($element, layout, component) {
     .attr('clip-path', 'url(#clipText)')
     .text(function (d) { return d.subtitle; });
 
-  var clip = subtitle.append('clipPath')
+  let clip = subtitle.append('clipPath')
     .attr('id','clipText' );
 
   clip.append('rect')
@@ -267,7 +264,7 @@ export default function paint($element, layout, component) {
   $('#' + id + ' line.marker').attr('stroke', markerColor);
 
   //convert hex to rgb as first step of gradient creation
-  var rangeRGB = hexToRgb(rangeColor);
+  let rangeRGB = hexToRgb(rangeColor);
   const middleRangeThreshold = 0.7;
   const lowerRangeThreshold = 0.85;
   //bind the colors to the ranges on the chart
@@ -282,10 +279,10 @@ export default function paint($element, layout, component) {
   d3.selectAll('rect')
     .on('mouseenter', function(d){
       if(component._inEditState) return;
-      var event = d3.event;
-      var x = event.pageX;
-      var y = event.pageY;
-      var container = this.parentNode.parentNode.parentNode; // d3.select('#' + id) always gives back the first object's element container, so when a user hover on a 2nd or 3rd or.. bar, its tooltip won't be rendered but the first object tooltip will ,,, DUE to the id not being updated
+      let event = d3.event;
+      let x = event.pageX;
+      let y = event.pageY;
+      let container = this.parentNode.parentNode.parentNode; // d3.select('#' + id) always gives back the first object's element container, so when a user hover on a 2nd or 3rd or.. bar, its tooltip won't be rendered but the first object tooltip will ,,, DUE to the id not being updated
 
       d3.select(container)
         .select('.ttvalue')
